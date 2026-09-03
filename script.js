@@ -11,6 +11,8 @@ var APPS = {
     'arc': {title: 'Arc AI', path: 'arc-ai.html', icon: 'icon-arc.svg', pinned: true},
     'chat': {title: 'Anchor Chat', path: 'chat.html', icon: 'icon-chat.svg', pinned: false},
     'media': {title: 'Anchor Media', path: 'media.html', icon: 'icon-media.svg', pinned: false},
+    'cine': {title: 'Cine', path: 'app-cine.html', icon: 'https://cdn-icons-png.flaticon.com/512/3163/3163478.png', pinned: false},
+    'cini': {title: 'Cini AI', path: 'app-cini.html', icon: 'icon-arc.svg', pinned: false},
     'extensions': {title: 'Extensions', path: 'extensions.html', icon: 'icon-extensions.svg', pinned: false},
     'discord': {title: 'Discord', path: 'app-discord.html', icon: 'https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png', pinned: false},
     'roblox': {title: 'Roblox', path: 'app-roblox.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9KvNyFWMg_bjo_q_1IVLKFWbfCeonn2qDow&s', pinned: false},
@@ -22,6 +24,7 @@ var APPS = {
     'RocketL': {title: 'Rocket League', path: 'app-rocketl.html', icon: 'https://ygo-assets-entities-us.yougov.net/87bb7a16-2b62-11e8-82b1-37bb0d207ced.jpg?zcw=518&zch=518&zct=10&zcl=0', pinned: false},
     'rivals': {title: 'Rivals', path: 'app-rivals.html', icon: 'icon-rivals.svg', pinned: false},
     'Xbox': {title: 'Xbox', path: 'app-xbox.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRknRQh-WRK4F75YB3EAlfrsqAk66Xjn45sBg&s', pinned: false},
+    'ps5': {title: 'PS5 Emulator', path: 'app-ps5.html', icon: 'https://cdn-icons-png.flaticon.com/512/732/732244.png', pinned: false},
 };
 
 var savedPins = localStorage.getItem('c_pins_v2');
@@ -67,6 +70,7 @@ var wallpaperRegistry = {
 };
 
 var sysConfig = JSON.parse(localStorage.getItem('anchor_sys_config')) || {};
+if(sysConfig.mono === undefined) sysConfig.mono = true;
 if(sysConfig.optBg === undefined) sysConfig.optBg = false;
 if(sysConfig.shortBoot === undefined) sysConfig.shortBoot = true;
 if(sysConfig.wpLoop === undefined) sysConfig.wpLoop = false;
@@ -82,7 +86,11 @@ window.updateSysSetting = function(key, value) {
     localStorage.setItem('anchor_sys_config', JSON.stringify(sysConfig));
     if(key === 'optBg') applySystemSettings();
     if(key === 'wpLoop') updateWallpaperLoop();
+    if(key === 'mono') document.body.classList.toggle('mono-theme', value);
 };
+
+document.body.classList.toggle('mono-theme', sysConfig.mono);
+window.toggleMonoTheme = function() { window.updateSysSetting('mono', !sysConfig.mono); };
 
 var cloaks = {
     none: {title: "Anchor OS", icon: "arch-mark.svg"},
@@ -562,10 +570,18 @@ function openWindow(id) {
                 </head>
                 <body>
                     <h2>SYSTEM CONFIGURATION</h2>
+                    <nav class="settings-tabs"><button onclick="showTab('customization')">Customization</button><button onclick="showTab('optimization')">Optimization</button><button onclick="showTab('browser')">Browser</button><button onclick="showTab('games')">Games</button></nav>
+                    <section id="customization" class="settings-tab">
+                    <div class="setting-card"><div class="setting-text"><b>Black and White Theme</b><small>Use a monochrome Anchor interface</small></div><label class="switch"><input type="checkbox" id="chk-mono" onchange="window.parent.updateSysSetting('mono',this.checked)"><span class="slider"></span></label></div>
+                    </section>
+                    <section id="optimization" class="settings-tab">
                     <div class="setting-card">
                         <div class="setting-text"><b>Optimized Background</b><small>Disables video background</small></div>
                         <label class="switch"><input type="checkbox" id="chk-bg" onchange="window.parent.updateSysSetting('optBg',this.checked)"><span class="slider"></span></label>
                     </div>
+                    </section>
+                    <section id="browser" class="settings-tab"><div class="setting-card"><div class="setting-text"><b>Browser Home</b><small>Choose the first page opened by Anchor Browser</small></div><input id="browser-home" type="url" value="https://www.google.com" onchange="window.parent.updateSysSetting('browserHome',this.value)"></div></section>
+                    <section id="games" class="settings-tab"><div class="setting-card"><div class="setting-text"><b>Custom Game</b><small>Add a title, category, and playable URL to Anchor Play</small></div><span><input id="game-title" placeholder="Title"><input id="game-category" placeholder="Category"><input id="game-url" type="url" placeholder="https://..."><button onclick="addGame()">Add</button></span></div><div id="custom-games"></div></section>
                     <div class="setting-card">
                         <div class="setting-text"><b>Fast Boot</b><small>Skips the startup sequence</small></div>
                         <label class="switch"><input type="checkbox" id="chk-boot" onchange="window.parent.updateSysSetting('shortBoot',this.checked)"><span class="slider"></span></label>
@@ -592,7 +608,12 @@ function openWindow(id) {
                         <input type="text" id="panic-input" maxlength="1" style="width:40px; text-align:center; font-weight:bold; font-size:16px;" onkeyup="window.parent.updateSysSetting('panicKey',this.value)">
                     </div>
                     <script>
+                        function showTab(id) { document.querySelectorAll('.settings-tab').forEach(function(tab){ tab.style.display = tab.id === id ? 'block' : 'none'; }); }
+                        function addGame() { var title=document.getElementById('game-title').value.trim(), category=document.getElementById('game-category').value.trim() || 'Custom', url=document.getElementById('game-url').value.trim(); if(title && /^https?:\\/\\//.test(url)) { window.parent.addCustomGame({title:title,category:category,url:url}); document.getElementById('game-title').value=''; document.getElementById('game-category').value=''; document.getElementById('game-url').value=''; } }
                         var prefs = window.parent.sysConfig;
+                        document.getElementById('chk-mono').checked = prefs.mono;
+                        document.getElementById('browser-home').value = prefs.browserHome || 'https://www.google.com';
+                        showTab('customization');
                         document.getElementById('chk-bg').checked = prefs.optBg;
                         document.getElementById('chk-boot').checked = prefs.shortBoot;
                         document.getElementById('chk-idle').checked = prefs.idleLock;

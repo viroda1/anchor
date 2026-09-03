@@ -51,6 +51,9 @@ body {
     color: white;
 }
 
+body.mono-theme,
+body.mono-theme #desktop-area { filter: grayscale(1); }
+
 #mobile-warning {
     display: none;
     position: fixed;
