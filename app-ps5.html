@@ -1576,22 +1576,20 @@ const HTML  = "https://cdn.jsdelivr.net/gh/bestsabplayerox/html@master/";
         async function runExe(g) {
             popMsg("Booting Title...");
             try {
-                let txt = "";
-                if (g.htmlContent) { 
-                    txt = g.htmlContent; 
-                } 
-                else if (g.url) {
-                    const res = await fetch(g.url);
-                    if(!res.ok) throw new Error("fetch fail");
-                    txt = await res.text();
-                } else return;
-
                 activeWin = window.open('about:blank', '_blank');
                 if(!activeWin) { popMsg("Browser blocked popup.", "error"); return; }
 
-                activeWin.document.open();
-                activeWin.document.write(txt);
-                activeWin.document.close();
+                if (g.htmlContent) { 
+                    // If it's an uploaded custom game, write the HTML directly
+                    activeWin.document.open();
+                    activeWin.document.write(g.htmlContent);
+                    activeWin.document.close();
+                } 
+                else if (g.url) {
+                    // FIX: Instead of fetching the URL (which causes CORS connection errors),
+                    // redirect the newly opened tab directly to the game URL.
+                    activeWin.location.href = g.url;
+                } else return;
 
                 document.getElementById('session-overlay').style.display = 'flex';
                 startT = Date.now();

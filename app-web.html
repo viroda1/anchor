@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Anchor Browser</title>
+    <title>Anchor Browser - Anchor OS</title>
     <link rel="icon" type="image/svg+xml" href="icon-chrome.svg">
     
     <!-- Anchor OS Fonts & Icons -->
@@ -15,18 +15,17 @@
     
     <style>
         :root {
-            --bg: #050508;
-            --surface: #0f0f1a;
+            --bg: #0a0e14;
+            --surface: rgba(15, 20, 25, 0.85);
             --surface-solid: #12121e;
-            --surface-hover: #1a1a2e;
-            --border: #2a2a4a;
-            --accent: #00f3ff;
-            --accent-glow: rgba(0, 243, 255, 0.2);
-            --accent-hover: #5dffff;
-            --text: #e0e0ff;
-            --text-muted: #707090;
-            --danger: #ff0040;
-            --transition: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+            --border: rgba(255, 255, 255, 0.1);
+            --accent: #c5e86c;
+            --accent-glow: rgba(197, 232, 108, 0.4);
+            --accent-hover: #d8ff7a;
+            --text: #f5f7fa;
+            --text-muted: #9bc4d8;
+            --danger: #ff4d4d;
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,41 +42,38 @@
             position: fixed; inset: 0; z-index: 200;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center; gap: 24px;
-            background: radial-gradient(ellipse at center, #0a0a12 0%, #000 70%);
+            background: radial-gradient(ellipse at center, #111 0%, var(--bg) 70%);
             transition: opacity 0.4s ease;
         }
-        .loader-ring {
-            width: 60px; height: 60px;
-            border: 2px solid var(--border);
-            border-top-color: var(--accent);
-            border-right-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            box-shadow: 0 0 20px var(--accent-glow), inset 0 0 10px var(--accent-glow);
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
         .boot-logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 28px; font-weight: 900;
-            color: var(--accent); letter-spacing: 4px;
+            font-size: 28px; font-weight: 900; color: var(--accent);
+            letter-spacing: 4px; display: flex; align-items: center; gap: 15px;
             text-shadow: 0 0 15px var(--accent-glow);
         }
+        .loader-ring {
+            width: 50px; height: 50px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
         .loader-text {
-            font-family: 'Rajdhani', sans-serif;
-            color: var(--text-muted); font-size: 14px; font-weight: 600;
-            letter-spacing: 1px; animation: pulse 1.5s ease-in-out infinite;
+            color: var(--text-muted); font-size: 13px; font-weight: 600;
+            letter-spacing: 2px; animation: pulse 1.5s ease-in-out infinite;
             text-transform: uppercase;
         }
         @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
 
         /* ===== Toolbar ===== */
         #toolbar {
-            position: fixed; top: 0; left: 0; right: 0; height: 50px; z-index: 50;
-            display: flex; align-items: center; gap: 8px; padding: 0 12px;
-            background: rgba(10, 10, 20, 0.8);
+            position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 50;
+            display: flex; align-items: center; gap: 10px; padding: 0 16px;
+            background: rgba(10, 14, 20, 0.8);
             border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
         }
         .brand {
             font-family: 'Orbitron', sans-serif;
@@ -85,25 +81,26 @@
             text-transform: uppercase; letter-spacing: 2px;
             text-decoration: none; margin-right: 10px;
             text-shadow: 0 0 8px var(--accent-glow);
+            display: flex; align-items: center; gap: 8px;
         }
 
         .nav-btn {
-            width: 36px; height: 36px; border: 1px solid var(--border);
-            background: rgba(255,255,255,0.02); color: var(--text-muted);
+            width: 38px; height: 38px; border: 1px solid var(--border);
+            background: rgba(255,255,255,0.03); color: var(--text-muted);
             cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: var(--transition); flex-shrink: 0; border-radius: 4px;
-            font-size: 14px;
+            transition: var(--transition); flex-shrink: 0; border-radius: 10px;
+            font-size: 15px;
         }
         .nav-btn:hover {
-            background: var(--accent-glow); color: var(--accent);
+            background: rgba(197, 232, 108, 0.1); color: var(--accent);
             border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow);
         }
         .nav-btn:active { transform: scale(0.92); }
 
         #address-bar {
-            flex: 1; display: flex; align-items: center; gap: 0; height: 36px;
-            background: #000; border: 1px solid var(--border);
-            border-radius: 4px; padding: 0 4px 0 14px; min-width: 0;
+            flex: 1; display: flex; align-items: center; gap: 0; height: 38px;
+            background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+            border-radius: 10px; padding: 0 4px 0 16px; min-width: 0;
             transition: var(--transition);
         }
         #address-bar:focus-within {
@@ -116,20 +113,20 @@
         }
         #address-input::placeholder { color: var(--text-muted); }
         #go-btn {
-            border: 1px solid var(--accent); background: transparent; color: var(--accent);
-            padding: 6px 18px; border-radius: 4px; font-size: 13px; font-weight: 700;
+            border: none; background: var(--accent); color: var(--bg);
+            padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 800;
             cursor: pointer; transition: var(--transition); white-space: nowrap;
             font-family: 'Orbitron', sans-serif; letter-spacing: 1px;
         }
         #go-btn:hover {
-            background: var(--accent); color: #000;
+            background: var(--accent-hover);
             box-shadow: 0 0 15px var(--accent-glow);
         }
         #go-btn:active { transform: scale(0.95); }
 
         /* ===== Load Progress Bar ===== */
         #progress-bar {
-            position: fixed; top: 50px; left: 0; height: 2px;
+            position: fixed; top: 56px; left: 0; height: 2px;
             background: var(--accent); width: 0%; z-index: 55;
             transition: width 0.3s ease, opacity 0.4s ease;
             box-shadow: 0 0 8px var(--accent);
@@ -137,7 +134,7 @@
 
         /* ===== Frame ===== */
         #frame-container {
-            position: fixed; top: 50px; left: 0; right: 0; bottom: 0;
+            position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
             background: var(--bg);
         }
         #frame-container iframe {
@@ -147,17 +144,18 @@
         /* ===== Error Screen ===== */
         #error-screen {
             display: none; position: fixed; inset: 0; z-index: 200;
-            background: #000; overflow-y: auto; padding-top: 50px;
+            background: var(--bg); overflow-y: auto; padding-top: 56px;
         }
         .error-card {
             max-width: 600px; margin: 60px auto; padding: 40px;
-            background: rgba(20, 20, 30, 0.9); border: 1px solid var(--danger);
-            border-radius: 8px; text-align: center;
-            box-shadow: 0 0 30px rgba(255, 0, 64, 0.2);
+            background: var(--surface); border: 1px solid var(--danger);
+            border-radius: 16px; text-align: center;
+            box-shadow: 0 0 30px rgba(255, 77, 77, 0.2);
+            backdrop-filter: blur(16px);
         }
         .error-icon {
             width: 60px; height: 60px; margin: 0 auto 20px;
-            background: rgba(255, 0, 64, 0.1); border-radius: 50%;
+            background: rgba(255, 77, 77, 0.1); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             color: var(--danger); font-size: 24px;
         }
@@ -169,66 +167,110 @@
         .error-card > p { color: var(--text-muted); line-height: 1.6; margin-bottom: 18px; font-size: 16px; }
         .error-code {
             background: #000; border: 1px solid var(--border);
-            border-radius: 4px; padding: 16px; text-align: left;
+            border-radius: 8px; padding: 16px; text-align: left;
             font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; color: var(--text-muted);
             margin: 18px 0; overflow-x: auto; white-space: pre; line-height: 1.5;
         }
         .error-actions { display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
         .btn-primary, .btn-secondary {
-            padding: 12px 24px; border-radius: 4px; font-size: 14px; font-weight: 700;
+            padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 700;
             cursor: pointer; text-decoration: none; transition: var(--transition);
             font-family: 'Orbitron', sans-serif; letter-spacing: 1px;
         }
         .btn-primary { background: var(--danger); color: #fff; border: 1px solid var(--danger); }
-        .btn-primary:hover { box-shadow: 0 0 15px rgba(255, 0, 64, 0.4); }
+        .btn-primary:hover { box-shadow: 0 0 15px rgba(255, 77, 77, 0.4); }
         .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
         .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
         /* ===== Settings Dropdown ===== */
         #settings-dropdown {
-            display: none; position: fixed; top: 60px; right: 12px;
-            z-index: 60; width: 320px; padding: 20px;
-            background: rgba(10, 10, 20, 0.95);
-            border: 1px solid var(--accent); border-radius: 8px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 15px var(--accent-glow);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            display: none; position: fixed; top: 66px; right: 16px;
+            z-index: 60; width: 340px; padding: 20px;
+            background: rgba(10, 14, 20, 0.95);
+            border: 1px solid var(--accent); border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 15px var(--accent-glow);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
         }
         #settings-dropdown.open { display: block; animation: slideDown 0.2s ease; }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        
         #settings-dropdown h3 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 12px; color: var(--accent); margin-bottom: 15px;
+            font-size: 14px; color: var(--accent); margin-bottom: 15px;
             text-transform: uppercase; letter-spacing: 1px;
-            border-bottom: 1px solid var(--border); padding-bottom: 8px;
+            border-bottom: 1px solid var(--border); padding-bottom: 10px;
+            display: flex; align-items: center; gap: 8px;
         }
-        #settings-dropdown label {
-            display: block; font-size: 13px; color: var(--text-muted);
-            margin-bottom: 8px; font-weight: 600;
+
+        .wisp-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 12px; background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border); border-radius: 8px;
+            margin-bottom: 8px; transition: var(--transition);
         }
-        #settings-dropdown input {
-            width: 100%; padding: 10px 12px; border: 1px solid var(--border);
-            border-radius: 4px; background: #000; color: var(--text);
-            font-size: 14px; outline: none; transition: var(--transition);
-            font-family: 'Rajdhani', sans-serif; font-weight: 600;
+        .wisp-item.active {
+            border-color: var(--accent); background: rgba(197, 232, 108, 0.1);
+            box-shadow: 0 0 10px rgba(197, 232, 108, 0.2);
         }
-        #settings-dropdown input:focus { border-color: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
-        #settings-dropdown .save-btn {
-            width: 100%; margin-top: 16px; padding: 10px; border: 1px solid var(--accent);
-            border-radius: 4px; background: transparent; color: var(--accent);
+        .wisp-item-info { display: flex; flex-direction: column; overflow: hidden; }
+        .wisp-item-name { font-weight: 700; color: var(--text); font-size: 14px; }
+        .wisp-item-url {
+            color: var(--text-muted); font-size: 11px; white-space: nowrap;
+            overflow: hidden; text-overflow: ellipsis; max-width: 220px;
+        }
+        .wisp-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
+        .wisp-action-btn {
+            background: transparent; border: 1px solid var(--border);
+            color: var(--text-muted); cursor: pointer; width: 28px; height: 28px;
+            border-radius: 6px; display: flex; align-items: center; justify-content: center;
+            font-size: 12px; transition: var(--transition);
+        }
+        .wisp-action-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .wisp-action-btn.delete:hover { border-color: var(--danger); color: var(--danger); }
+
+        .wisp-add-form { display: flex; gap: 8px; margin-top: 15px; margin-bottom: 15px; }
+        .wisp-add-form input {
+            flex: 1; padding: 8px 12px; border: 1px solid var(--border);
+            background: #000; color: var(--text); border-radius: 6px; outline: none;
+            font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 13px;
+        }
+        .wisp-add-form input::placeholder { color: var(--text-muted); }
+        .wisp-add-form input:focus { border-color: var(--accent); }
+        .wisp-add-form button {
+            padding: 0 14px; border: 1px solid var(--accent);
+            background: transparent; color: var(--accent); border-radius: 6px;
+            cursor: pointer; transition: var(--transition);
+        }
+        .wisp-add-form button:hover { background: var(--accent); color: var(--bg); }
+
+        .save-btn {
+            width: 100%; margin-top: 5px; padding: 12px; border: 1px solid var(--accent);
+            border-radius: 8px; background: transparent; color: var(--accent);
             font-weight: 700; font-size: 14px; cursor: pointer; transition: var(--transition);
             font-family: 'Orbitron', sans-serif; letter-spacing: 1px;
         }
-        #settings-dropdown .save-btn:hover {
-            background: var(--accent); color: #000;
-            box-shadow: 0 0 15px var(--accent-glow);
+        .save-btn:hover { background: var(--accent); color: var(--bg); box-shadow: 0 0 15px var(--accent-glow); }
+
+        /* ===== Toasts ===== */
+        #toast-container {
+            position: fixed; top: 70px; right: 20px; z-index: 300;
+            display: flex; flex-direction: column; gap: 10px;
         }
+        .toast {
+            background: rgba(15,20,25,0.95); border: 1px solid var(--border);
+            color: var(--text); padding: 12px 20px; border-radius: 8px;
+            font-size: 14px; backdrop-filter: blur(10px); box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: all 0.3s; display: flex; align-items: center; gap: 10px;
+        }
+        .toast.error { border-color: var(--danger); }
+        .toast.success { border-color: var(--accent); }
 
         /* ===== Responsive ===== */
         @media (max-width: 600px) {
-            .brand { font-size: 0; margin-right: 0; }
+            .brand span { display: none; }
+            #toolbar { padding: 0 8px; gap: 6px; }
             .nav-btn { width: 34px; height: 34px; }
-            #toolbar { padding: 0 6px; gap: 4px; }
-            #go-btn { padding: 6px 12px; }
+            #go-btn { padding: 8px 12px; }
             #address-bar { padding: 0 2px 0 10px; }
         }
     </style>
@@ -237,33 +279,23 @@
 
 <!-- Loading -->
 <div id="loading">
+    <div class="boot-logo"><i class="fas fa-anchor"></i> ANCHOR BROWSER</div>
     <div class="loader-ring"></div>
-    <div class="boot-logo">ANCHOR BROWSER</div>
     <div class="loader-text">INITIALIZING PROXY...</div>
 </div>
 
 <!-- Toolbar -->
 <header id="toolbar">
-    <a href="index.html" class="brand">ANCHOR</a>
-    <button class="nav-btn" id="back-btn" title="Back (Alt+←)">
-        <i class="fas fa-chevron-left"></i>
-    </button>
-    <button class="nav-btn" id="forward-btn" title="Forward (Alt+→)">
-        <i class="fas fa-chevron-right"></i>
-    </button>
-    <button class="nav-btn" id="reload-btn" title="Reload (Ctrl+R)">
-        <i class="fas fa-rotate-right"></i>
-    </button>
+    <a href="index.html" class="brand"><i class="fas fa-anchor"></i> <span>ANCHOR</span></a>
+    <button class="nav-btn" id="back-btn" title="Back (Alt+←)"><i class="fas fa-chevron-left"></i></button>
+    <button class="nav-btn" id="forward-btn" title="Forward (Alt+→)"><i class="fas fa-chevron-right"></i></button>
+    <button class="nav-btn" id="reload-btn" title="Reload (Ctrl+R)"><i class="fas fa-rotate-right"></i></button>
     <form id="address-bar" autocomplete="off">
         <input id="address-input" type="text" placeholder="Search Google or type a URL" spellcheck="false" aria-label="Address bar">
         <button id="go-btn" type="submit">GO</button>
     </form>
-    <button class="nav-btn" id="settings-btn" title="Settings">
-        <i class="fas fa-gear"></i>
-    </button>
-    <button class="nav-btn" id="fullscreen-btn" title="Fullscreen (F11)">
-        <i class="fas fa-expand"></i>
-    </button>
+    <button class="nav-btn" id="settings-btn" title="Settings"><i class="fas fa-gear"></i></button>
+    <button class="nav-btn" id="fullscreen-btn" title="Fullscreen (F11)"><i class="fas fa-expand"></i></button>
 </header>
 
 <!-- Progress Bar -->
@@ -274,18 +306,22 @@
 
 <!-- Settings -->
 <div id="settings-dropdown">
-    <h3>Proxy Settings</h3>
-    <label for="wisp-input">Wisp Server URL</label>
-    <input id="wisp-input" type="text" placeholder="wss://...">
-    <button class="save-btn" id="save-settings">SAVE & RELOAD</button>
+    <h3><i class="fas fa-server"></i> Wisp Backends</h3>
+    <div id="wisp-list"></div>
+    
+    <div class="wisp-add-form">
+        <input id="wisp-name-input" type="text" placeholder="Name" style="flex: 0.4;">
+        <input id="wisp-url-input" type="text" placeholder="wss://...">
+        <button id="add-wisp-btn"><i class="fas fa-plus"></i></button>
+    </div>
+    
+    <button class="save-btn" id="save-settings">APPLY & RELOAD</button>
 </div>
 
 <!-- Error -->
 <div id="error-screen">
     <div class="error-card">
-        <div class="error-icon">
-            <i class="fas fa-exclamation-triangle"></i>
-        </div>
+        <div class="error-icon"><i class="fas fa-exclamation-triangle"></i></div>
         <h1>Proxy Initialization Failed</h1>
         <p id="error-message"></p>
         <div class="error-code" id="error-code"></div>
@@ -298,7 +334,7 @@
 
 <script>
 /* ============================================================
-   CONFIG
+   CONFIG & STATE
    ============================================================ */
 const SCRAMJET_CDN   = 'https://cdn.jsdelivr.net/gh/Destroyed12121/Staticsj@main/JS';
 const DEFAULT_WISP   = 'wss://anura.pro/wisp/';
@@ -306,6 +342,11 @@ const DEFAULT_HOME   = 'https://www.google.com';
 
 let browserFrame  = null;
 let currentUrl    = DEFAULT_HOME;
+
+let wispServers = JSON.parse(localStorage.getItem('anchorWispServers')) || [
+    { name: 'Anura Pro', url: 'wss://anura.pro/wisp/' }
+];
+let activeWispUrl = localStorage.getItem('anchorActiveWisp') || wispServers[0]?.url;
 
 /* ============================================================
    UTILITIES
@@ -332,22 +373,105 @@ function hideProgress() {
     setTimeout(() => { bar.style.opacity = '0'; bar.style.width = '0%'; }, 300);
 }
 
+function popMsg(txt, type="info") {
+    let box = document.getElementById('toast-container');
+    if (!box) {
+        box = document.createElement('div');
+        box.id = 'toast-container';
+        document.body.appendChild(box);
+    }
+    const t = document.createElement('div');
+    t.className = `toast ${type}`;
+    t.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i> ${txt}`;
+    box.appendChild(t);
+    setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transform = 'translateX(100%)';
+        setTimeout(() => t.remove(), 300);
+    }, 3000);
+}
+
+/* ============================================================
+   WISP BACKEND MANAGER
+   ============================================================ */
+function renderWispList() {
+    const list = document.getElementById('wisp-list');
+    list.innerHTML = '';
+    
+    if (wispServers.length === 0) {
+        list.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:15px; font-size:13px;">No backends added.<br>Add one below to start.</div>';
+        return;
+    }
+
+    wispServers.forEach((server, index) => {
+        const item = document.createElement('div');
+        item.className = `wisp-item ${server.url === activeWispUrl ? 'active' : ''}`;
+        
+        item.innerHTML = `
+            <div class="wisp-item-info">
+                <span class="wisp-item-name">${server.name}</span>
+                <span class="wisp-item-url">${server.url}</span>
+            </div>
+            <div class="wisp-item-actions">
+                ${server.url !== activeWispUrl ? `<button class="wisp-action-btn activate" title="Set Active"><i class="fas fa-check"></i></button>` : ''}
+                <button class="wisp-action-btn delete" title="Delete"><i class="fas fa-times"></i></button>
+            </div>
+        `;
+        
+        if (server.url !== activeWispUrl) {
+            item.querySelector('.activate').onclick = () => {
+                activeWispUrl = server.url;
+                localStorage.setItem('anchorActiveWisp', activeWispUrl);
+                renderWispList();
+                popMsg("Active backend updated. Click Apply to reload.", "success");
+            };
+        }
+        
+        item.querySelector('.delete').onclick = () => {
+            wispServers.splice(index, 1);
+            localStorage.setItem('anchorWispServers', JSON.stringify(wispServers));
+            if (activeWispUrl === server.url && wispServers.length > 0) {
+                activeWispUrl = wispServers[0].url;
+                localStorage.setItem('anchorActiveWisp', activeWispUrl);
+            } else if (wispServers.length === 0) {
+                activeWispUrl = null;
+                localStorage.removeItem('anchorActiveWisp');
+            }
+            renderWispList();
+        };
+        
+        list.appendChild(item);
+    });
+}
+
+document.getElementById('add-wisp-btn').onclick = () => {
+    const nameInput = document.getElementById('wisp-name-input');
+    const urlInput = document.getElementById('wisp-url-input');
+    const name = nameInput.value.trim() || `Backend ${wispServers.length + 1}`;
+    const url = urlInput.value.trim();
+    if (url) {
+        wispServers.push({ name, url });
+        localStorage.setItem('anchorWispServers', JSON.stringify(wispServers));
+        if (!activeWispUrl) {
+            activeWispUrl = url;
+            localStorage.setItem('anchorActiveWisp', activeWispUrl);
+        }
+        nameInput.value = '';
+        urlInput.value = '';
+        renderWispList();
+    } else {
+        popMsg("URL cannot be empty.", "error");
+    }
+};
+
 /* ============================================================
    SCRAMJET CONTROLLER
    ============================================================ */
 async function getScramjetControllerClass() {
-    if (window.$scramjetLoadController) {
-        const r = window.$scramjetLoadController();
-        if (r?.ScramjetController) return r.ScramjetController;
-    }
     if (window.ScramjetController) return window.ScramjetController;
     
     for (let i = 0; i < 20; i++) {
         await new Promise(r => setTimeout(r, 200));
-        if (window.$scramjetLoadController) {
-            const r = window.$scramjetLoadController();
-            if (r?.ScramjetController) return r.ScramjetController;
-        }
         if (window.ScramjetController) return window.ScramjetController;
     }
 
@@ -388,8 +512,13 @@ async function startBrowser() {
               || DEFAULT_HOME;
     document.getElementById('address-input').value = currentUrl;
 
-    document.getElementById('wisp-input').value =
-        localStorage.getItem('anchorWisp') || DEFAULT_WISP;
+    // Check if user has any backends configured
+    if (!activeWispUrl) {
+        document.getElementById('loading').style.display = 'none';
+        settingsDropdown.classList.add('open');
+        popMsg("Please add a Wisp backend to begin.", "error");
+        return;
+    }
 
     try {
         // 1 — Scramjet controller
@@ -414,12 +543,11 @@ async function startBrowser() {
         const registration = await navigator.serviceWorker.register('./sw.js', { scope: './' });
         await navigator.serviceWorker.ready;
         
-        // 3 — Send Wisp Config to Service Worker
-        const wisp = localStorage.getItem('anchorWisp') || DEFAULT_WISP;
+        // 3 — Send Multiple Wisp Configs to Service Worker
         navigator.serviceWorker.controller.postMessage({ 
             type: 'config', 
-            wispurl: wisp,
-            servers: [{ url: wisp, name: 'Default Wisp' }], 
+            wispurl: activeWispUrl, // The currently selected active URL
+            servers: wispServers.map(s => ({ url: s.url, name: s.name })), // Array of all backends for autoswitch
             autoswitch: true 
         });
 
@@ -430,7 +558,7 @@ async function startBrowser() {
         frame.frame.style.cssText = 'width:100%;height:100%;border:none;display:block;';
         frame.frame.setAttribute('allow', 'autoplay; fullscreen; gamepad; microphone; camera; clipboard-read; clipboard-write; encrypted-media');
         frame.frame.setAttribute('allowfullscreen', '');
-        frame.frame.title = 'Anchor Browser';
+        frame.frame.title = 'Anchor Browser Content';
 
         frame.frame.addEventListener('loadstart', () => { showProgress(); });
         frame.frame.addEventListener('load', () => {
@@ -439,6 +567,7 @@ async function startBrowser() {
             setTimeout(() => { loading.style.display = 'none'; }, 400);
         });
 
+        // Fallback hide loader after 10s
         setTimeout(() => {
             if (loading.style.display !== 'none') {
                 loading.style.opacity = '0';
@@ -495,6 +624,7 @@ const settingsDropdown = document.getElementById('settings-dropdown');
 settingsBtn.onclick = (e) => {
     e.stopPropagation();
     settingsDropdown.classList.toggle('open');
+    if (settingsDropdown.classList.contains('open')) renderWispList();
 };
 
 document.addEventListener('click', (e) => {
@@ -504,11 +634,7 @@ document.addEventListener('click', (e) => {
 });
 
 document.getElementById('save-settings').onclick = () => {
-    const wisp = document.getElementById('wisp-input').value.trim();
-    if (wisp) {
-        localStorage.setItem('anchorWisp', wisp);
-        location.reload();
-    }
+    location.reload();
 };
 
 /* ============================================================

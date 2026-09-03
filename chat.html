@@ -1,5 +1,297 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Anchor Chat</title><style>body{margin:0;background:#101418;color:#eef2f5;font:16px system-ui;min-height:100vh}main{width:min(760px,92vw);margin:8vh auto}h1{font-size:2rem}.messages{height:52vh;overflow:auto;border:1px solid #37414b;border-radius:12px;padding:14px;background:#182027}.message{padding:10px 12px;margin:8px 0;border-radius:10px;max-width:80%;background:#26313a}.mine{margin-left:auto;background:#31536a}.composer{display:flex;gap:8px;margin-top:12px}input,button{font:inherit;padding:11px;border-radius:9px;border:1px solid #465461}input{flex:1;background:#182027;color:#fff}button{background:#8bd3ff;color:#101418;cursor:pointer}a{color:#8bd3ff}</style></head>
-<body><main><p><a href="index.html">Anchor</a></p><h1>Anchor Chat</h1><section class="messages" id="messages" aria-live="polite"></section><form class="composer" id="form"><input id="input" autocomplete="off" placeholder="Write a message..."><button>Send</button></form></main><script>const messages=document.getElementById('messages'),form=document.getElementById('form'),input=document.getElementById('input');function add(text,mine){const item=document.createElement('div');item.className='message'+(mine?' mine':'');item.textContent=text;messages.append(item);messages.scrollTop=messages.scrollHeight}form.addEventListener('submit',event=>{event.preventDefault();const text=input.value.trim();if(!text)return;add(text,true);input.value='';setTimeout(()=>add('Message saved locally. Use Arc AI for assistant replies.',false),250)});add('Welcome to Anchor Chat.',false);</script></body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Anchor Chat - Anchor OS</title>
+  <link rel="icon" type="image/svg+xml" href="arch-mark.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --os-bg: #0a0e14;
+      --os-surface: rgba(15, 20, 25, 0.85);
+      --os-border: rgba(255, 255, 255, 0.1);
+      --os-accent: #c5e86c;
+      --os-text: #f5f7fa;
+      --os-text-dim: #9bc4d8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--os-bg);
+      color: var(--os-text);
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Ambient Background Glow */
+    body::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at center, rgba(197, 232, 108, 0.05) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app {
+      position: relative;
+      z-index: 10;
+      width: min(680px, 92vw);
+      height: min(80vh, 680px);
+      background: var(--os-surface);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--os-border);
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05) inset;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .app-header {
+      padding: 20px 32px;
+      border-bottom: 1px solid var(--os-border);
+      background: rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--os-text-dim);
+      text-decoration: none;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--os-accent); }
+
+    .app-header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 3px;
+      color: var(--os-text);
+    }
+    .app-header h1 span { color: var(--os-accent); }
+
+    /* Messages Area */
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.2) transparent;
+    }
+
+    .messages::-webkit-scrollbar { width: 6px; }
+    .messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+
+    .message {
+      max-width: 75%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 1rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .system {
+      align-self: flex-start;
+      background: #26343d;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-bottom-left-radius: 4px;
+      color: var(--os-text);
+    }
+
+    .mine {
+      align-self: flex-end;
+      background: var(--os-accent);
+      color: #101418;
+      font-weight: 600;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 15px rgba(197, 232, 108, 0.15);
+    }
+
+    .typing-indicator {
+      align-self: flex-start;
+      background: #26343d;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-bottom-left-radius: 4px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .typing-indicator span {
+      width: 8px;
+      height: 8px;
+      background-color: var(--os-text-dim);
+      border-radius: 50%;
+      display: inline-block;
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+
+    .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+    .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
+    }
+
+    /* Composer */
+    .composer-wrapper {
+      padding: 16px 24px 24px;
+      background: rgba(0,0,0,0.3);
+      border-top: 1px solid var(--os-border);
+    }
+
+    .composer {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--os-border);
+      border-radius: 16px;
+      padding: 8px 8px 8px 18px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .composer:focus-within {
+      border-color: var(--os-accent);
+      background: rgba(0,0,0,0.6);
+    }
+
+    input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--os-text);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.1rem;
+      outline: none;
+      padding: 8px 0;
+    }
+
+    input::placeholder { color: rgba(255,255,255,0.3); }
+
+    .btn-primary {
+      background: var(--os-accent);
+      color: #101418;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 22px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(197, 232, 108, 0.3);
+    }
+    .btn-primary:active { transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<main class="app">
+  <header class="app-header">
+    <a href="index.html" class="back-link">
+      <i class="fas fa-arrow-left"></i> Anchor
+    </a>
+    <h1>Anchor <span>Chat</span></h1>
+  </header>
+
+  <section class="messages" id="messages" aria-live="polite"></section>
+
+  <footer class="composer-wrapper">
+    <form class="composer" id="form">
+      <input id="input" autocomplete="off" placeholder="Write a message..." aria-label="Chat Input">
+      <button type="submit" class="btn-primary">
+        <i class="fas fa-paper-plane"></i> Send
+      </button>
+    </form>
+  </footer>
+</main>
+
+<script>
+  const messages = document.getElementById('messages'),
+        form = document.getElementById('form'),
+        input = document.getElementById('input');
+
+  function add(text, kind) {
+    const item = document.createElement('div');
+    item.className = `message ${kind}`;
+    item.textContent = text;
+    messages.append(item);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function addTypingIndicator() {
+    const typing = document.createElement('div');
+    typing.className = 'typing-indicator';
+    typing.id = 'typing-indicator';
+    typing.innerHTML = '<span></span><span></span><span></span>';
+    messages.append(typing);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function removeTypingIndicator() {
+    const typing = document.getElementById('typing-indicator');
+    if (typing) typing.remove();
+  }
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+    
+    add(text, 'mine');
+    input.value = '';
+    
+    // Show typing indicator before system replies
+    addTypingIndicator();
+    
+    setTimeout(() => {
+      removeTypingIndicator();
+      add('Message saved locally. Use Arc AI for assistant replies.', 'system');
+    }, 800);
+  });
+
+  // Initial welcome message
+  add('Welcome to Anchor Chat.', 'system');
+</script>
+</body>
 </html>

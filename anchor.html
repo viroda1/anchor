@@ -2,29 +2,104 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anchor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Anchor Stream</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        html, body { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
-        iframe { width: 100%; height: 100%; border: none; display: none; }
-        #ntf {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(20,20,20,0.9); color: #fff; padding: 10px 18px;
-            border-radius: 12px; border: 1px solid #333; z-index: 99;
-            display: none; align-items: center; gap: 12px; backdrop-filter: blur(5px);
+        :root {
+            --os-bg: #0a0e14;
+            --os-accent: #c5e86c;
+            --os-text-dim: #9bc4d8;
         }
-        #ntf b { color: #2ecc71; }
-        #btn { background: #333; border: none; color: #fff; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; }
-        .ld { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; color: #444; background: #000; }
+        
+        html, body { 
+            margin: 0; padding: 0; height: 100%; width: 100%; 
+            overflow: hidden; background: var(--os-bg); 
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        iframe { 
+            width: 100%; height: 100%; border: none; 
+            display: none; 
+            opacity: 0; 
+            transition: opacity 0.6s ease; 
+        }
+
+        #ld { 
+            position: fixed; inset: 0; 
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; 
+            background: var(--os-bg); z-index: 100;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        /* Ambient Background Glow */
+        #ld::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(197, 232, 108, 0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .boot-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem; letter-spacing: 4px;
+            color: #fff; margin-bottom: 40px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+        .boot-logo span { color: var(--os-accent); }
+
+        .spinner {
+            width: 40px; height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: var(--os-accent);
+            border-radius: 50%; animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .status-text {
+            color: var(--os-text-dim); font-size: 0.9rem;
+            letter-spacing: 2px; text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
-    <div id="ld">Initialising...</div>
+    <div id="ld">
+        <div class="boot-logo">ANCHOR <span>STREAM</span></div>
+        <div class="spinner"></div>
+        <div class="status-text">Establishing secure connection...</div>
+    </div>
+
     <iframe id="ifr" allowfullscreen allow="autoplay; fullscreen; gamepad; microphone; camera"></iframe>
+
     <script>
-        document.getElementById('ifr').src = "http://streamex.sh";
-        document.getElementById('ifr').style.display = 'block';
-        document.getElementById('ld').style.display = 'none';
+        const iframe = document.getElementById('ifr');
+        const loader = document.getElementById('ld');
+
+        // Set the source
+        iframe.src = "http://streamex.sh";
+
+        // Function to gracefully fade out the loader and fade in the iframe
+        function revealApp() {
+            iframe.style.display = 'block';
+            // Slight delay to allow display:block to apply before transitioning opacity
+            setTimeout(() => {
+                iframe.style.opacity = '1';
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 600);
+            }, 100);
+        }
+
+        // Listen for iframe load (works if same-origin or cross-origin headers allow it)
+        iframe.onload = revealApp;
+
+        // Fallback timeout (e.g., if onload doesn't fire due to X-Frame-Options or cross-origin policies)
+        // 2.5 seconds to simulate OS boot sequence
+        setTimeout(revealApp, 2500);
     </script>
 </body>
 </html>
