@@ -1,10 +1,29 @@
 Anchor OS
 
 
-Anchor OS is a rebranded desktop proxy workspace based on the authorized
-viroda1/cineos repository. It includes the CineOS app and media structure,
-Scramjet browser integration, Wisp transport, wallpaper engine, taskbar,
-windows, games, notifications, settings, and app drawer.
+Anchor OS is a focused desktop workspace created by Isaac Hughley. It includes
+the Anchor Hub, browser, media, games, Calculator, Study cards, and Ask Wolfy,
+an independent AI assistant powered through a server-side Groq connection.
+
+## Run locally
+
+```sh
+npm start
+```
+
+Set `GROQ_API_KEY` in the server environment before using Ask Wolfy. Never put
+the key in browser code, local storage, or a committed file.
+
+## Deploy
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/viroda1/anchor)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/viroda1/anchor)
+
+For every provider, add `GROQ_API_KEY` as an environment variable. Render runs
+`npm start`; Netlify uses `netlify/functions`; Vercel uses `api/ask-wolfy.js`.
 
 Better Movies Site
 
@@ -13,5 +32,6 @@ Fix Proxy
 Fix folders and AI
 
 More Features (brain-storm)
-Credits: viroda1/cineos, MercuryWorkshop/Scramjet, MercuryWorkshop/Wisp, Zinc,
-StaticSJ, Axis, Axis-V2, and T9OS.
+Creator: Isaac Hughley.
+Credits: MercuryWorkshop/Scramjet, MercuryWorkshop/Wisp, Zinc, StaticSJ,
+Axis, Axis-V2, and T9OS.

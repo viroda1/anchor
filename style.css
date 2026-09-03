@@ -122,7 +122,7 @@ body {
     cursor: pointer;
     letter-spacing: 2px;
     transition: 0.3s;
-    border-radius: 4px;
+    border-radius: 999px;
     box-shadow: 0 0 15px rgba(255,255,255,0.1);
 }
 
@@ -696,7 +696,7 @@ details.thought-process summary::before { content: "🧠"; font-size: 15px; }
 #mode-toggle:hover { background: #fff; color: #000; border-color: #fff; }
 #mode-toggle.live-active { background: #fff; color: #000; border-color: #fff; animation: pulseWhite 2s infinite; }
 @keyframes pulseWhite { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); } 70% { box-shadow: 0 0 0 8px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
-#action-orb { width: 48px; height: 48px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fff 0%, #aaa 20%, #444 60%, #111 100%); box-shadow: 0 8px 20px rgba(0,0,0,0.8), inset -4px -4px 10px rgba(0,0,0,0.9), inset 2px 2px 8px rgba(255,255,255,0.4); transition: all 0.3s cubic-bezier(0.2,0.8,0.2,1); flex-shrink: 0; cursor: pointer; }
+#action-orb { width: 48px; height: 48px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #d9ff8a 0%, #94c948 25%, #31502d 65%, #101812 100%); box-shadow: 0 8px 20px rgba(0,0,0,0.8), inset -4px -4px 10px rgba(0,0,0,0.9), inset 2px 2px 8px rgba(255,255,255,0.4); transition: all 0.3s cubic-bezier(0.2,0.8,0.2,1); flex-shrink: 0; cursor: pointer; }
 #action-orb:hover { transform: scale(1.08); box-shadow: 0 12px 25px rgba(255,255,255,0.1); }
 #action-orb.thinking { animation: orbAlive 2s infinite ease-in-out; filter: contrast(1.2) brightness(1.1); }
 @keyframes orbAlive { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255,255,255,0.1); } 50% { transform: scale(1.05); box-shadow: 0 0 20px 5px rgba(255,255,255,0.3); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255,255,255,0.1); } }

@@ -2,15 +2,18 @@ var _SYSTEM_PATHS = ["C:/Windows/System32/kernel32.dll", "/var/www/html/cine-os/
 var _devBuildVer = "3.0.1";
 
 var APPS = {
-    'cine': {title: 'ANCHOR // HUB', path: 'app-cine.html', icon: 'arch-mark.svg', pinned: true},
-    'term': {title: 'Spotify', path: 'app-spotify.html', icon: 'https://cdn.pixabay.com/photo/2016/10/22/00/15/spotify-1759471_1280.jpg', pinned: true},
-    'files': {title: 'PS5 Emu', path: 'app-ps5.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-OeL_be7RFaoHi3PswkuAR5XcMgBNRDynsg&s', pinned: true},
+    'cine': {title: 'Anchor Hub', path: 'app-cine.html', icon: 'arch-mark.svg', pinned: true},
+    'term': {title: 'Anchor Music', path: 'app-spotify.html', icon: 'https://cdn.pixabay.com/photo/2016/10/22/00/15/spotify-1759471_1280.jpg', pinned: true},
+    'files': {title: 'Anchor Play', path: 'app-ps5.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-OeL_be7RFaoHi3PswkuAR5XcMgBNRDynsg&s', pinned: true},
     'web': {title: 'Anchor Web', path: 'app-web.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeD89ZcX5W1FBtal7RerasT27q-OmZqnBixQ&s', pinned: true},
-    'settings': {title: 'CONFIG', internal: true, icon: 'https://cdn.iconscout.com/icon/free/png-256/free-apple-settings-icon-svg-download-png-493162.png', pinned: true},
+    'settings': {title: 'Anchor Settings', internal: true, icon: 'https://cdn.iconscout.com/icon/free/png-256/free-apple-settings-icon-svg-download-png-493162.png', pinned: true},
+    'calculator': {title: 'Anchor Calculator', path: 'app-calculator.html', icon: 'https://cdn-icons-png.flaticon.com/512/104/104686.png', pinned: false},
+    'study': {title: 'Anchor Study', path: 'app-study.html', icon: 'https://cdn-icons-png.flaticon.com/512/3074/3074058.png', pinned: false},
+    'wolfy': {title: 'Ask Wolfy', path: 'app-wolfy.html', icon: 'arch-mark.svg', pinned: true},
     'discord': {title: 'Discord', path: 'app-discord.html', icon: 'https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png', pinned: false},
     'roblox': {title: 'Roblox', path: 'app-roblox.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9KvNyFWMg_bjo_q_1IVLKFWbfCeonn2qDow&s', pinned: false},
     'android': {title: 'Android', path: 'app-android.html', icon: 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/android-icon.png', pinned: false},
-    'ciniai': {title: 'Cini AI', path: 'app-cini.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkLXhvns5Rrdf-XBNlWcPIRh0hlJfWnEtBWg&s', pinned: false},
+    'ciniai': {title: 'Ask Wolfy', path: 'app-wolfy.html', icon: 'arch-mark.svg', pinned: true},
     'VM': {title: 'Windows Virtual-Machine', path: 'app-vm.html', icon: 'https://static1.squarespace.com/static/68e69c83884dc82cc035a923/69454e29c6db7516b2566fca/69454e32c6db7516b256749a/1766149682532/Virtualbox_logo.png?format=original', pinned: false},
     'crunchyroll': {title: 'CrunchyRoll', path: 'app-crunchy.html', icon: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a0a4547a-06c5-4740-b87a-ca9c4fa0171e/dduaesk-2b3e85d2-3116-4eb5-8260-f413d1fc670e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi9hMGE0NTQ3YS0wNmM1LTQ3NDAtYjg3YS1jYTljNGZhMDE3MWUvZGR1YWVzay0yYjNlODVkMi0zMTE2LTRlYjUtODI2MC1mNDEzZDFmYzY3MGUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.vReffTSSKpde4w8EwFxz_CttxlLay8fXOq0goYh6rsg', pinned: false},
     'Geforce': {title: 'GEFORCE NOW', path: 'app-geforce.html', icon: 'https://play-lh.googleusercontent.com/_-b_HQXrVyyhZSHj_BoE9u_-cxkcHDH_yLX5rDjJsFMIfsCNQs9F3QP4JvEFcWaSIz0=w240-h480-rw', pinned: false},
@@ -1377,3 +1380,81 @@ function chkFps() {
     requestAnimationFrame(chkFps);
 }
 requestAnimationFrame(chkFps);
+
+var wolfyMessages = [];
+
+function renderWolfyMessage(role, text) {
+    var history = document.getElementById('chat-history');
+    if(!history) return;
+    var message = document.createElement('div');
+    message.className = 'message ' + (role === 'user' ? 'user' : 'ciri');
+    if(window.marked && role !== 'user') message.innerHTML = window.marked.parse(text);
+    else message.textContent = text;
+    history.appendChild(message);
+    history.scrollTop = history.scrollHeight;
+}
+
+window.handleSend = async function() {
+    var input = document.getElementById('chat-input');
+    var orb = document.getElementById('action-orb');
+    var text = input && input.value.trim();
+    if(!text || (orb && orb.classList.contains('thinking'))) return;
+    wolfyMessages.push({role: 'user', content: text});
+    renderWolfyMessage('user', text);
+    input.value = '';
+    autoGrow(input);
+    if(orb) orb.classList.add('thinking');
+    try {
+        var response = await fetch('/api/ask-wolfy', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({messages: wolfyMessages})
+        });
+        var data = await response.json();
+        if(!response.ok) throw new Error(data.error || 'The Anchor AI service is unavailable.');
+        var reply = data.reply || 'I did not receive a response.';
+        wolfyMessages.push({role: 'assistant', content: reply});
+        renderWolfyMessage('assistant', reply);
+    } catch(error) {
+        renderWolfyMessage('assistant', error.message + ' Set GROQ_API_KEY on the deployment server.');
+    } finally {
+        if(orb) orb.classList.remove('thinking');
+        input.focus();
+    }
+};
+
+window.cycleMode = function() {
+    cMode = (cMode + 1) % MODES.length;
+    var toggle = document.getElementById('mode-toggle');
+    if(toggle) toggle.textContent = MODES[cMode];
+};
+
+window.clearImage = function() {
+    var preview = document.getElementById('img-preview-box');
+    if(preview) preview.style.display = 'none';
+    cImgB64 = null;
+    cImgMime = null;
+};
+
+window.handleFileUpload = function(event) {
+    var file = event.target.files && event.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function() {
+        var image = document.getElementById('img-preview');
+        var box = document.getElementById('img-preview-box');
+        if(image) image.src = reader.result;
+        if(box) box.style.display = 'flex';
+        cImgB64 = reader.result;
+        cImgMime = file.type;
+    };
+    reader.readAsDataURL(file);
+};
+
+var wolfyInput = document.getElementById('chat-input');
+if(wolfyInput) wolfyInput.addEventListener('keydown', function(event) {
+    if(event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        handleSend();
+    }
+});
