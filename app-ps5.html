@@ -306,12 +306,16 @@
         }
         @keyframes slideIn { from { transform: translateX(120%) scale(0.9); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
 
+        /* REDESIGNED SESSION OVERLAY */
         #session-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(30px); z-index: 15000;
+            display: none; position: fixed; bottom: 20px; right: 20px; 
+            background: rgba(20, 20, 25, 0.95); backdrop-filter: blur(20px); z-index: 15000;
             flex-direction: column; justify-content: center; align-items: center;
+            padding: 15px 25px; border-radius: 16px; border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .session-timer { font-size: 6rem; font-weight: 100; margin: 30px 0; letter-spacing: -2px; }
-        .end-btn { background: white; color: black; border: none; padding: 15px 50px; font-size: 18px; font-weight: bold; border-radius: 30px; cursor: pointer; transition: 0.2s; }
+        .session-timer { font-size: 2rem; font-weight: 100; margin: 10px 0; letter-spacing: -1px; }
+        .end-btn { background: white; color: black; border: none; padding: 10px 30px; font-size: 14px; font-weight: bold; border-radius: 20px; cursor: pointer; transition: 0.2s; }
         body.mouse-mode .end-btn:hover { background: #ff3b30; color: white; transform: scale(1.05); }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -438,7 +442,7 @@
     <input type="file" id="file-input" style="display: none;" accept=".html">
 
     <div id="session-overlay">
-        <div style="color:var(--ps-blue); font-weight: bold; font-size: 20px; letter-spacing: 2px;">NOW PLAYING</div>
+        <div style="color:var(--ps-blue); font-weight: bold; font-size: 14px; letter-spacing: 2px;">NOW PLAYING</div>
         <div class="session-timer" id="session-timer">00:00:00</div>
         <button class="end-btn" onclick="killGame()">Close Game</button>
     </div>
@@ -486,7 +490,7 @@ const HTML  = "https://cdn.jsdelivr.net/gh/bestsabplayerox/html@master/";
   { title: "Volley Random", url: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master/games/354.html", image: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/357.jpg" },
   { title: "Basket Random", url: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master/games/353.html", image: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/362.png" },
   { title: "Soccer Random", url: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master/games/352.html", image: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/361.jpg" },
-  { title: "Little Big Planet", url: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master/games/351.html", image: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master/images/351.jpg" },
+  { title: "Little Big Planet", url: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master/games/351.html", image: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/351.jpg" },
   { title: "Binding of Isaac: Rebirth", url: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master/games/350.html", image: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/350.jpg" },
   { title: "Littlest Pet Shop City Friends", url: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master/games/348.html", image: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/349.jpg" },
   { title: "Cloverpit", url: "https://script.google.com/macros/s/AKfycbw2YH3dPJE1XWPOXBnR4UOidr3vX8fgY0ZIyWj1Bmx9Lcty0e1bfUOYwPJ02lviN2Hb/exec?game=342.html", image: "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/343.jpg" },
@@ -1572,24 +1576,39 @@ const HTML  = "https://cdn.jsdelivr.net/gh/bestsabplayerox/html@master/";
             }
         }
 
-        // REDESIGNED BOOTING SYSTEM -> NO BLOBS, ONLY ABOUT:BLANK DOCUMENT WRITES
+        // REDESIGNED BOOTING SYSTEM -> LOADS GAMES IN IFRAMES INSTEAD OF NEW TABS
         async function runExe(g) {
             popMsg("Booting Title...");
             try {
-                activeWin = window.open('about:blank', '_blank');
-                if(!activeWin) { popMsg("Browser blocked popup.", "error"); return; }
+                // Create a fullscreen iframe to hold the game
+                activeWin = document.createElement('iframe');
+                activeWin.style.position = 'fixed';
+                activeWin.style.top = '0';
+                activeWin.style.left = '0';
+                activeWin.style.width = '100vw';
+                activeWin.style.height = '100vh';
+                activeWin.style.border = 'none';
+                activeWin.style.zIndex = '14000'; // Sits below the session overlay
+                activeWin.style.backgroundColor = '#000';
+                activeWin.id = 'game-frame';
 
                 if (g.htmlContent) { 
-                    // If it's an uploaded custom game, write the HTML directly
-                    activeWin.document.open();
-                    activeWin.document.write(g.htmlContent);
-                    activeWin.document.close();
+                    // For uploaded custom games, use about:blank and write the HTML directly
+                    activeWin.src = 'about:blank';
+                    activeWin.onload = () => {
+                        activeWin.contentWindow.document.open();
+                        activeWin.contentWindow.document.write(g.htmlContent);
+                        activeWin.contentWindow.document.close();
+                    };
                 } 
                 else if (g.url) {
                     // FIX: Instead of fetching the URL (which causes CORS connection errors),
-                    // redirect the newly opened tab directly to the game URL.
-                    activeWin.location.href = g.url;
+                    // set the iframe src directly. 
+                    // Note: Some game sites block being embedded via X-Frame-Options.
+                    activeWin.src = g.url;
                 } else return;
+
+                document.body.appendChild(activeWin);
 
                 document.getElementById('session-overlay').style.display = 'flex';
                 startT = Date.now();
@@ -1601,16 +1620,11 @@ const HTML  = "https://cdn.jsdelivr.net/gh/bestsabplayerox/html@master/";
             }
         }
 
-        function tickTime() {
-            if(!startT) return;
-            const d = new Date(Date.now() - startT);
-            document.getElementById('session-timer').innerText = 
-                `${String(d.getUTCHours()).padStart(2,'0')}:${String(d.getUTCMinutes()).padStart(2,'0')}:${String(d.getUTCSeconds()).padStart(2,'0')}`;
-        }
-
         function killGame() {
-            if(activeWin) activeWin.close();
-            activeWin = null;
+            if(activeWin) {
+                activeWin.remove(); // Removes the iframe from the DOM entirely
+                activeWin = null;
+            }
             clearInterval(tInterval);
             startT = null;
             document.getElementById('session-overlay').style.display = 'none';
