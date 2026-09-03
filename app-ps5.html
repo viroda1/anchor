@@ -1576,11 +1576,10 @@ const HTML  = "https://cdn.jsdelivr.net/gh/bestsabplayerox/html@master/";
             }
         }
 
-        // REDESIGNED BOOTING SYSTEM -> LOADS GAMES IN IFRAMES INSTEAD OF NEW TABS
+        // REDESIGNED BOOTING SYSTEM -> LOADS GAMES IN ABOUT:BLANK IFRAMES 
         async function runExe(g) {
             popMsg("Booting Title...");
             try {
-                // Create a fullscreen iframe to hold the game
                 activeWin = document.createElement('iframe');
                 activeWin.style.position = 'fixed';
                 activeWin.style.top = '0';
@@ -1588,27 +1587,55 @@ const HTML  = "https://cdn.jsdelivr.net/gh/bestsabplayerox/html@master/";
                 activeWin.style.width = '100vw';
                 activeWin.style.height = '100vh';
                 activeWin.style.border = 'none';
-                activeWin.style.zIndex = '14000'; // Sits below the session overlay
+                activeWin.style.zIndex = '14000';
                 activeWin.style.backgroundColor = '#000';
                 activeWin.id = 'game-frame';
 
+                // Explicitly load as about:blank as requested
+                activeWin.src = 'about:blank';
+                document.body.appendChild(activeWin);
+
+                // Ensure the frame is fully loaded before writing
+                await new Promise(resolve => {
+                    if (activeWin.contentWindow.document.readyState === 'complete') resolve();
+                    else activeWin.onload = resolve;
+                    setTimeout(resolve, 50); // fallback
+                });
+
+                const doc = activeWin.contentWindow.document;
+                doc.open();
+
                 if (g.htmlContent) { 
-                    // For uploaded custom games, use about:blank and write the HTML directly
-                    activeWin.src = 'about:blank';
-                    activeWin.onload = () => {
-                        activeWin.contentWindow.document.open();
-                        activeWin.contentWindow.document.write(g.htmlContent);
-                        activeWin.contentWindow.document.close();
-                    };
+                    // Custom uploaded game HTML
+                    doc.write(g.htmlContent);
                 } 
                 else if (g.url) {
-                    // FIX: Instead of fetching the URL (which causes CORS connection errors),
-                    // set the iframe src directly. 
-                    // Note: Some game sites block being embedded via X-Frame-Options.
-                    activeWin.src = g.url;
-                } else return;
-
-                document.body.appendChild(activeWin);
+                    // Fetch external URL and write it to the about:blank iframe
+                    try {
+                        const response = await fetch(g.url);
+                        let html = await response.text();
+                        
+                        // Inject a <base> tag so relative links to scripts/images still load from the original URL
+                        const urlObj = new URL(g.url);
+                        const basePath = urlObj.href.substring(0, urlObj.href.lastIndexOf('/') + 1);
+                        const baseTag = `<base href="${basePath}">`;
+                        
+                        if (/<head[^>]*>/i.test(html)) {
+                            html = html.replace(/<head[^>]*>/i, match => match + baseTag);
+                        } else if (/<html[^>]*>/i.test(html)) {
+                            html = html.replace(/<html[^>]*>/i, match => match + '<head>' + baseTag + '</head>');
+                        } else {
+                            html = baseTag + html;
+                        }
+                        
+                        doc.write(html);
+                    } catch (err) {
+                        // If CORS blocks fetch, fallback to loading directly
+                        console.error("Fetch blocked, fallback to src:", err);
+                        activeWin.src = g.url;
+                    }
+                }
+                doc.close();
 
                 document.getElementById('session-overlay').style.display = 'flex';
                 startT = Date.now();
@@ -1622,7 +1649,7 @@ const HTML  = "https://cdn.jsdelivr.net/gh/bestsabplayerox/html@master/";
 
         function killGame() {
             if(activeWin) {
-                activeWin.remove(); // Removes the iframe from the DOM entirely
+                activeWin.remove(); 
                 activeWin = null;
             }
             clearInterval(tInterval);
