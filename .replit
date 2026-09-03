@@ -1,0 +1,7 @@
+run = "npm start"
+entrypoint = "server.js"
+modules = ["nodejs-20"]
+
+[deployment]
+run = ["npm", "start"]
+deploymentTarget = "cloudrun"
