@@ -4,104 +4,524 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anchor Browser</title>
-    <script src="https://cdn.jsdelivr.net/gh/Destroyed12121/Staticsj@main/JS/scramjet.all.js" defer></script>
+    <link rel="icon" href="icon-chrome.svg" type="image/svg+xml">
+    
+    <!-- Scramjet Main Script -->
+    <script src="https://cdn.jsdelivr.net/gh/Destroyed12121/Staticsj@main/JS/scramjet.all.js"></script>
+    
     <style>
-        :root { color-scheme: dark; }
-        html, body { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
-        iframe { width: 100%; height: 100%; border: none; display: block; }
-        #loading { position: fixed; inset: 0; display: grid; place-items: center; color: #777; background: #000; z-index: 4; }
-        #browser-toolbar { position: fixed; z-index: 5; top: 12px; left: 14px; right: 14px; height: 52px; display: flex; align-items: center; gap: 7px; padding: 7px 10px; border: 1px solid #444; border-radius: 17px; background: #111d; backdrop-filter: blur(18px); }
-        .browser-brand { display: flex; align-items: center; gap: 7px; color: #fff; text-decoration: none; font-weight: 700; white-space: nowrap; }
-        .browser-brand img { width: 25px; height: 25px; }
-        #browser-toolbar button { min-width: 31px; height: 31px; border: 1px solid #444; border-radius: 50%; background: #222; color: #ddd; cursor: pointer; }
-        #browser-toolbar button:hover { background: #fff; color: #000; }
-        #address { display: flex; flex: 1; gap: 6px; margin-left: 8px; }
-        #address input { min-width: 0; flex: 1; padding: 9px 13px; border: 1px solid #444; border-radius: 12px; background: #080808; color: #fff; outline: 0; }
-        #address button { border: 0 !important; border-radius: 11px !important; background: #fff !important; color: #000 !important; }
-        #fallback { display: none; position: fixed; inset: 0; z-index: 3; padding: 100px 24px 24px; background: #101418; color: #fff; text-align: center; }
-        #fallback a { display: inline-block; margin-top: 18px; padding: 12px 18px; border-radius: 10px; background: #8bd3ff; color: #101418; text-decoration: none; font-weight: 700; }
-        @media (max-width: 650px) { .browser-brand { font-size: 0; } .browser-brand img { width: 23px; height: 23px; } #browser-toolbar { left: 7px; right: 7px; gap: 4px; } #address { margin-left: 2px; } }
+        :root {
+            --bg: #0a0a12;
+            --surface: #14142080;
+            --surface-solid: #141420;
+            --surface-hover: #1e1e2e;
+            --border: #2a2a3e;
+            --accent: #5b8def;
+            --accent-glow: #5b8def40;
+            --accent-hover: #7ba4f5;
+            --text: #e8e8f0;
+            --text-muted: #7a7a92;
+            --danger: #ef5b5b;
+            --radius: 12px;
+            --transition: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            height: 100%; width: 100%; overflow: hidden;
+            background: var(--bg); color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            font-size: 14px; -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== Loading Screen ===== */
+        #loading {
+            position: fixed; inset: 0; z-index: 200;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 28px;
+            background: radial-gradient(ellipse at center, #12121e 0%, var(--bg) 70%);
+            transition: opacity 0.4s ease;
+        }
+        .loader-ring {
+            width: 56px; height: 56px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            box-shadow: 0 0 24px var(--accent-glow);
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loader-text {
+            color: var(--text-muted); font-size: 14px;
+            letter-spacing: 0.6px; animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+        /* ===== Toolbar ===== */
+        #toolbar {
+            position: fixed; top: 0; left: 0; right: 0; height: 54px; z-index: 50;
+            display: flex; align-items: center; gap: 6px; padding: 0 10px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+        }
+        .brand {
+            display: flex; align-items: center; gap: 9px;
+            padding: 0 6px 0 2px; text-decoration: none; color: var(--text);
+            font-weight: 700; font-size: 15px; white-space: nowrap;
+        }
+        .brand-logo {
+            width: 28px; height: 28px; border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent), #4a6dc4);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 900; font-size: 15px;
+            box-shadow: 0 2px 8px var(--accent-glow);
+        }
+
+        .nav-btn {
+            width: 36px; height: 36px; border: none; border-radius: 10px;
+            background: transparent; color: var(--text-muted);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: var(--transition); flex-shrink: 0;
+        }
+        .nav-btn:hover { background: var(--surface-hover); color: var(--text); }
+        .nav-btn:active { transform: scale(0.92); }
+        .nav-btn svg { width: 20px; height: 20px; }
+
+        #address-bar {
+            flex: 1; display: flex; align-items: center; gap: 0;
+            background: var(--bg); border: 1px solid var(--border);
+            border-radius: 10px; padding: 0 3px 0 14px; min-width: 0;
+            transition: var(--transition);
+        }
+        #address-bar:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        #address-input {
+            flex: 1; min-width: 0; border: none; background: transparent;
+            color: var(--text); font-size: 14px; padding: 9px 0; outline: none;
+        }
+        #address-input::placeholder { color: var(--text-muted); }
+        #go-btn {
+            border: none; background: var(--accent); color: white;
+            padding: 7px 18px; border-radius: 8px; font-size: 13px;
+            font-weight: 600; cursor: pointer; transition: var(--transition);
+            white-space: nowrap; flex-shrink: 0;
+        }
+        #go-btn:hover { background: var(--accent-hover); }
+        #go-btn:active { transform: scale(0.95); }
+
+        /* ===== Load Progress Bar ===== */
+        #progress-bar {
+            position: fixed; top: 54px; left: 0; height: 2px;
+            background: var(--accent); width: 0%; z-index: 55;
+            transition: width 0.3s ease, opacity 0.4s ease;
+            box-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        /* ===== Frame ===== */
+        #frame-container {
+            position: fixed; top: 54px; left: 0; right: 0; bottom: 0;
+            background: var(--bg);
+        }
+        #frame-container iframe {
+            width: 100%; height: 100%; border: none; display: block;
+        }
+
+        /* ===== Error Screen ===== */
+        #error-screen {
+            display: none; position: fixed; inset: 0; z-index: 200;
+            background: var(--bg); overflow-y: auto; padding-top: 54px;
+        }
+        .error-card {
+            max-width: 580px; margin: 60px auto; padding: 36px 32px;
+            background: var(--surface-solid); border: 1px solid var(--border);
+            border-radius: 16px; text-align: center;
+        }
+        .error-icon {
+            width: 56px; height: 56px; margin: 0 auto 22px;
+            background: rgba(239, 91, 91, 0.12); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--danger);
+        }
+        .error-card h1 { font-size: 20px; margin-bottom: 10px; }
+        .error-card > p { color: var(--text-muted); line-height: 1.6; margin-bottom: 18px; }
+        .error-code {
+            background: var(--bg); border: 1px solid var(--border);
+            border-radius: 10px; padding: 16px; text-align: left;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 12.5px; color: var(--text-muted);
+            margin: 18px 0; overflow-x: auto; white-space: pre; line-height: 1.5;
+        }
+        .error-actions { display: flex; gap: 10px; justify-content: center; margin-top: 22px; flex-wrap: wrap; }
+        .btn-primary {
+            background: var(--accent); color: white; border: none;
+            padding: 10px 22px; border-radius: 10px; font-size: 14px;
+            font-weight: 600; cursor: pointer; text-decoration: none; transition: var(--transition);
+        }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .btn-secondary {
+            background: var(--surface-hover); color: var(--text);
+            border: 1px solid var(--border); padding: 10px 22px;
+            border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition);
+        }
+        .btn-secondary:hover { background: var(--border); }
+
+        /* ===== Settings Dropdown ===== */
+        #settings-dropdown {
+            display: none; position: fixed; top: 54px; right: 10px;
+            z-index: 60; width: 300px; padding: 16px;
+            background: var(--surface-solid); border: 1px solid var(--border);
+            border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+        }
+        #settings-dropdown.open { display: block; animation: slideDown 0.2s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        #settings-dropdown h3 { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        #settings-dropdown label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+        #settings-dropdown input {
+            width: 100%; padding: 9px 12px; border: 1px solid var(--border);
+            border-radius: 8px; background: var(--bg); color: var(--text);
+            font-size: 13px; outline: none; transition: var(--transition);
+        }
+        #settings-dropdown input:focus { border-color: var(--accent); }
+        #settings-dropdown .save-btn {
+            width: 100%; margin-top: 14px; padding: 9px; border: none;
+            border-radius: 8px; background: var(--accent); color: white;
+            font-weight: 600; font-size: 13px; cursor: pointer; transition: var(--transition);
+        }
+        #settings-dropdown .save-btn:hover { background: var(--accent-hover); }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 600px) {
+            .brand span { display: none; }
+            .nav-btn { width: 34px; height: 34px; }
+            #toolbar { padding: 0 6px; gap: 3px; }
+            #go-btn { padding: 7px 12px; }
+            #address-bar { padding: 0 2px 0 10px; }
+        }
     </style>
 </head>
 <body>
-    <header id="browser-toolbar">
-        <a href="index.html" class="browser-brand"><img src="icon-chrome.svg" alt=""> <span>Anchor Browser</span></a>
-        <button id="back" type="button" aria-label="Back">&#8592;</button>
-        <button id="forward" type="button" aria-label="Forward">&#8594;</button>
-        <button id="reload" type="button" aria-label="Reload">&#8635;</button>
-        <form id="address"><input id="address-input" value="https://www.google.com" aria-label="Address"><button type="submit">Go</button></form>
-        <button id="fullscreen" type="button" aria-label="Fullscreen">&#9974;</button>
-    </header>
-    <div id="loading">Connecting to Anchor Browser...</div>
-    <div id="fallback"><h1>Anchor Browser proxy unavailable</h1><p>This deployment cannot start the service worker. Open the requested page directly or deploy Anchor on a host with service-worker support.</p><a id="fallback-link" target="_blank" rel="noopener">Open destination</a></div>
-    <iframe id="browser-frame" title="Anchor Browser" allowfullscreen allow="autoplay; fullscreen; gamepad; microphone; camera"></iframe>
 
-    <script>
-        let browserFrame;
-        let currentUrl;
+<!-- Loading -->
+<div id="loading">
+    <div class="loader-ring"></div>
+    <div class="loader-text">Connecting to Anchor Browser…</div>
+</div>
 
-        function normaliseUrl(value) {
-            const input = value.trim();
-            if (!input) return null;
-            return /^[a-z][a-z\d+.-]*:\/\//i.test(input) ? input : `https://${input}`;
+<!-- Toolbar -->
+<header id="toolbar">
+    <a href="index.html" class="brand">
+        <div class="brand-logo">A</div>
+        <span>Anchor</span>
+    </a>
+    <button class="nav-btn" id="back-btn" title="Back (Alt+←)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <button class="nav-btn" id="forward-btn" title="Forward (Alt+→)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <button class="nav-btn" id="reload-btn" title="Reload (Ctrl+R)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+    </button>
+    <form id="address-bar" autocomplete="off">
+        <input id="address-input" type="text" placeholder="Search Google or type a URL" spellcheck="false" aria-label="Address bar">
+        <button id="go-btn" type="submit">Go</button>
+    </form>
+    <button class="nav-btn" id="settings-btn" title="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    </button>
+    <button class="nav-btn" id="fullscreen-btn" title="Fullscreen (F11)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+    </button>
+</header>
+
+<!-- Progress Bar -->
+<div id="progress-bar" style="opacity:0;"></div>
+
+<!-- Frame -->
+<div id="frame-container"></div>
+
+<!-- Settings -->
+<div id="settings-dropdown">
+    <h3>Proxy Settings</h3>
+    <label for="wisp-input">Wisp Server URL</label>
+    <input id="wisp-input" type="text" placeholder="wss://...">
+    <button class="save-btn" id="save-settings">Save & Reload</button>
+</div>
+
+<!-- Error -->
+<div id="error-screen">
+    <div class="error-card">
+        <div class="error-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h1 id="error-title">Unable to Start Proxy</h1>
+        <p id="error-message"></p>
+        <div class="error-code" id="error-code"></div>
+        <div class="error-actions">
+            <a id="error-link" class="btn-primary" target="_blank" rel="noopener">Open Direct</a>
+            <button class="btn-secondary" onclick="location.reload()">Retry</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+const SCRAMJET_CDN   = 'https://cdn.jsdelivr.net/gh/Destroyed12121/Staticsj@main/JS';
+const BARE_MUX_CDN   = 'https://cdn.jsdelivr.net/npm/@mercuryworkshop/bare-mux/dist';
+const EPOXY_CDN      = 'https://cdn.jsdelivr.net/npm/@mercuryworkshop/epoxy-transport@2.1.28/dist';
+const DEFAULT_WISP   = 'wss://anura.pro/wisp/';
+const DEFAULT_HOME   = 'https://www.google.com';
+
+let browserFrame  = null;
+let currentUrl    = DEFAULT_HOME;
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+function normalizeUrl(input) {
+    const v = input.trim();
+    if (!v) return null;
+    if (/^[a-z][a-z\d+.-]*:\/\//i.test(v)) return v;
+    if (/^(localhost|127\.0\.0\.1|(\d{1,3}\.){3}\d{1,3})(:\d+)?(\/|$)/i.test(v)) return `http://${v}`;
+    if (/^[\w-]+(\.[\w-]+)+([/:?#].*)?$/.test(v)) return `https://${v}`;
+    return `https://www.google.com/search?q=${encodeURIComponent(v)}`;
+}
+
+function showProgress() {
+    const bar = document.getElementById('progress-bar');
+    bar.style.opacity = '1';
+    bar.style.width = '0%';
+    requestAnimationFrame(() => { bar.style.width = '70%'; });
+}
+
+function hideProgress() {
+    const bar = document.getElementById('progress-bar');
+    bar.style.width = '100%';
+    setTimeout(() => { bar.style.opacity = '0'; bar.style.width = '0%'; }, 300);
+}
+
+/* ============================================================
+   SCRAMJET CONTROLLER
+   ============================================================ */
+async function getScramjetControllerClass() {
+    if (window.$scramjetLoadController) {
+        const r = window.$scramjetLoadController();
+        if (r?.ScramjetController) return r.ScramjetController;
+    }
+    if (window.ScramjetController) return window.ScramjetController;
+    
+    // Fallback: wait for script to load
+    for (let i = 0; i < 20; i++) {
+        await new Promise(r => setTimeout(r, 200));
+        if (window.$scramjetLoadController) {
+            const r = window.$scramjetLoadController();
+            if (r?.ScramjetController) return r.ScramjetController;
         }
+        if (window.ScramjetController) return window.ScramjetController;
+    }
 
-        async function startBrowser() {
-            const loading = document.getElementById('loading');
-            const appBase = new URL('.', document.baseURI);
-            const assetUrl = (path) => new URL(path, appBase).toString();
-            currentUrl = normaliseUrl(location.hash.slice(1)) || localStorage.getItem('browserHome') || 'https://www.google.com';
-            document.getElementById('address-input').value = currentUrl;
+    // Last resort: dynamic import
+    try {
+        const mod = await import(`${SCRAMJET_CDN}/scramjet.all.js`);
+        return mod.ScramjetController || mod.default?.ScramjetController;
+    } catch (_) { /* fall through */ }
 
-            try {
-                if (!('serviceWorker' in navigator)) throw new Error('Service workers are unavailable here.');
-                if (!window.$scramjetLoadController) throw new Error('Scramjet failed to load.');
-                const { ScramjetController } = window.$scramjetLoadController();
-                const controller = new ScramjetController({
-                    prefix: new URL('scramjet/', appBase).pathname,
-                    files: {
-                        wasm: 'https://cdn.jsdelivr.net/gh/Destroyed12121/Staticsj@main/JS/scramjet.wasm.wasm',
-                        all: 'https://cdn.jsdelivr.net/gh/Destroyed12121/Staticsj@main/JS/scramjet.all.js',
-                        sync: 'https://cdn.jsdelivr.net/gh/Destroyed12121/Staticsj@main/JS/scramjet.sync.js'
-                    }
-                });
-                await controller.init();
-                const registration = await navigator.serviceWorker.register(assetUrl('sw.js'), { scope: appBase.pathname });
-                await navigator.serviceWorker.ready;
-                const BareMux = await import('https://cdn.jsdelivr.net/npm/@mercuryworkshop/bare-mux/dist/index.mjs');
-                const connection = new BareMux.BareMuxConnection(assetUrl('bareworker.js'));
-                const wisp = localStorage.getItem('anchorWisp') || 'wss://anura.pro/wisp/';
-                await connection.setTransport('https://cdn.jsdelivr.net/npm/@mercuryworkshop/epoxy-transport@2.1.28/dist/index.mjs', [{ wisp }]);
-                registration.active?.postMessage({ type: 'config', wispurl: wisp });
+    throw new Error('ScramjetController not found. The CDN script failed to load.');
+}
 
-                const frame = controller.createFrame();
-                browserFrame = frame;
-                frame.frame.id = 'browser-frame';
-                frame.frame.title = 'Anchor Browser';
-                frame.frame.allowFullscreen = true;
-                frame.frame.addEventListener('load', () => { loading.style.display = 'none'; });
-                document.body.replaceChild(frame.frame, document.getElementById('browser-frame'));
-                frame.go(currentUrl);
-            } catch (error) {
-                loading.style.display = 'none';
-                document.getElementById('fallback').style.display = 'block';
-                const link = document.getElementById('fallback-link');
-                link.href = currentUrl;
-                link.textContent = `Open ${currentUrl}`;
-                console.error('Anchor Browser proxy unavailable:', error);
-            }
+async function initScramjet() {
+    const Controller = await getScramjetControllerClass();
+
+    const controller = new Controller({
+        files: {
+            wasm:  `${SCRAMJET_CDN}/scramjet.wasm.wasm`,
+            sync:  `${SCRAMJET_CDN}/scramjet.sync.js`,
+            all:   `${SCRAMJET_CDN}/scramjet.all.js`,
         }
+    });
 
-        document.getElementById('back').onclick = () => browserFrame?.back?.();
-        document.getElementById('forward').onclick = () => browserFrame?.forward?.();
-        document.getElementById('reload').onclick = () => browserFrame?.reload?.();
-        document.getElementById('fullscreen').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
-        document.getElementById('address').onsubmit = (event) => {
-            event.preventDefault();
-            const value = normaliseUrl(document.getElementById('address-input').value);
-            if (value) { localStorage.setItem('browserHome', value); location.hash = value; location.reload(); }
-        };
-        window.addEventListener('load', startBrowser);
-    </script>
+    await controller.init();
+    return controller;
+}
+
+/* ============================================================
+   SERVICE WORKER & TRANSPORT (Using your local files)
+   ============================================================ */
+async function registerServiceWorker() {
+    if (!('serviceWorker' in navigator))
+        throw new Error('Service workers are not available in this browser.');
+
+    // Register your local sw.js that is in the root directory
+    const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+    await navigator.serviceWorker.ready;
+    return reg;
+}
+
+async function setupTransport() {
+    const { BareMuxConnection } = await import(`${BARE_MUX_CDN}/index.mjs`);
+    
+    // Use your local bareworker.js
+    const connection = new BareMuxConnection('./bareworker.js');
+    const wisp = localStorage.getItem('anchorWisp') || DEFAULT_WISP;
+
+    await connection.setTransport(`${EPOXY_CDN}/index.mjs`, [{ wisp }]);
+    return { connection, wisp };
+}
+
+/* ============================================================
+   ERROR UI
+   ============================================================ */
+function showError(title, message, code) {
+    document.getElementById('loading').style.display = 'none';
+    const el = document.getElementById('error-screen');
+    el.style.display = 'block';
+    document.getElementById('error-title').textContent = title;
+    document.getElementById('error-message').textContent = message;
+    const codeEl = document.getElementById('error-code');
+    if (code) { codeEl.textContent = code; codeEl.style.display = 'block'; }
+    else      { codeEl.style.display = 'none'; }
+    const link = document.getElementById('error-link');
+    link.href = currentUrl;
+    try { link.textContent = `Open ${new URL(currentUrl).hostname}`; }
+    catch { link.textContent = 'Open Direct'; }
+}
+
+/* ============================================================
+   MAIN START
+   ============================================================ */
+async function startBrowser() {
+    const loading = document.getElementById('loading');
+
+    currentUrl = normalizeUrl(location.hash.slice(1))
+              || localStorage.getItem('anchorHome')
+              || DEFAULT_HOME;
+    document.getElementById('address-input').value = currentUrl;
+
+    document.getElementById('wisp-input').value =
+        localStorage.getItem('anchorWisp') || DEFAULT_WISP;
+
+    try {
+        // 1 — Scramjet controller
+        const controller = await initScramjet();
+
+        // 2 — Service worker (your local file)
+        const registration = await registerServiceWorker();
+
+        // 3 — BareMux transport (using your local file)
+        const { wisp } = await setupTransport();
+        
+        // Send WISP URL to your service worker if it expects it
+        registration.active?.postMessage({ type: 'config', wispurl: wisp });
+
+        // 4 — Create browser frame via Scramjet
+        const frame = controller.createFrame();
+        browserFrame = frame;
+
+        frame.frame.style.cssText =
+            'width:100%;height:100%;border:none;display:block;';
+        frame.frame.setAttribute('allow',
+            'autoplay; fullscreen; gamepad; microphone; camera; clipboard-read; clipboard-write; encrypted-media');
+        frame.frame.setAttribute('allowfullscreen', '');
+        frame.frame.title = 'Anchor Browser';
+
+        frame.frame.addEventListener('loadstart', () => { showProgress(); });
+        frame.frame.addEventListener('load', () => {
+            hideProgress();
+            loading.style.opacity = '0';
+            setTimeout(() => { loading.style.display = 'none'; }, 400);
+        });
+
+        // Append frame and navigate
+        document.getElementById('frame-container').appendChild(frame.frame);
+        showProgress();
+        frame.go(currentUrl);
+
+    } catch (error) {
+        console.error('[Anchor] Init error:', error);
+        showError(
+            'Unable to Start Proxy',
+            error.message || 'An unknown error occurred during initialization.',
+            error.stack || ''
+        );
+    }
+}
+
+/* ============================================================
+   NAVIGATION HANDLERS
+   ============================================================ */
+document.getElementById('back-btn').onclick = () => browserFrame?.back?.();
+document.getElementById('forward-btn').onclick = () => browserFrame?.forward?.();
+document.getElementById('reload-btn').onclick = () => browserFrame?.reload?.();
+document.getElementById('fullscreen-btn').onclick = () => {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen?.();
+};
+
+document.getElementById('address-bar').onsubmit = (e) => {
+    e.preventDefault();
+    const value = normalizeUrl(document.getElementById('address-input').value);
+    if (!value) return;
+    currentUrl = value;
+    localStorage.setItem('anchorHome', value);
+    location.hash = value;
+    if (browserFrame?.go) {
+        showProgress();
+        browserFrame.go(value);
+    } else {
+        location.reload();
+    }
+};
+
+/* ============================================================
+   SETTINGS DROPDOWN
+   ============================================================ */
+const settingsBtn = document.getElementById('settings-btn');
+const settingsDropdown = document.getElementById('settings-dropdown');
+
+settingsBtn.onclick = (e) => {
+    e.stopPropagation();
+    settingsDropdown.classList.toggle('open');
+};
+
+document.addEventListener('click', (e) => {
+    if (!settingsDropdown.contains(e.target) && e.target !== settingsBtn) {
+        settingsDropdown.classList.remove('open');
+    }
+});
+
+document.getElementById('save-settings').onclick = () => {
+    const wisp = document.getElementById('wisp-input').value.trim();
+    if (wisp) {
+        localStorage.setItem('anchorWisp', wisp);
+        location.reload();
+    }
+};
+
+/* ============================================================
+   KEYBOARD SHORTCUTS
+   ============================================================ */
+document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'l' || e.key === 'L')) {
+        e.preventDefault();
+        const input = document.getElementById('address-input');
+        input.focus(); input.select();
+    }
+    if (e.altKey && e.key === 'ArrowLeft')  { e.preventDefault(); document.getElementById('back-btn').click(); }
+    if (e.altKey && e.key === 'ArrowRight') { e.preventDefault(); document.getElementById('forward-btn').click(); }
+    if (e.key === 'Escape') settingsDropdown.classList.remove('open');
+});
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+window.addEventListener('DOMContentLoaded', startBrowser);
+</script>
 </body>
-</html
+</html>
