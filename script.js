@@ -3,7 +3,7 @@ var _devBuildVer = "3.0.1";
 
 var APPS = {
     'anchor': {title: 'Anchor Hub', path: 'anchor.html', icon: 'arch-mark.svg', pinned: true},
-    'term': {title: 'Anchor Music', path: 'app-spotify.html', icon: 'https://cdn.pixabay.com/photo/2016/10/22/00/15/spotify-1759471_1280.jpg', pinned: true},
+    'term': {title: 'Spotify', path: 'app-spotify.html', icon: 'https://cdn.pixabay.com/photo/2016/10/22/00/15/spotify-1759471_1280.jpg', pinned: true},
     'files': {title: 'Anchor Files', path: 'files.html', icon: 'icon-files.svg', pinned: true},
     'web': {title: 'Anchor Browser', path: 'app-web.html', icon: 'icon-chrome.svg', pinned: true},
     'settings': {title: 'Anchor Settings', internal: true, icon: 'https://cdn.iconscout.com/icon/free/png-256/free-apple-settings-icon-svg-download-png-493162.png', pinned: true},
@@ -11,20 +11,20 @@ var APPS = {
     'arc': {title: 'Arc AI', path: 'arc-ai.html', icon: 'icon-arc.svg', pinned: true},
     'chat': {title: 'Anchor Chat', path: 'chat.html', icon: 'icon-chat.svg', pinned: false},
     'media': {title: 'Anchor Media', path: 'media.html', icon: 'icon-media.svg', pinned: false},
-    'cine': {title: 'Cine', path: 'app-cine.html', icon: 'https://cdn-icons-png.flaticon.com/512/3163/3163478.png', pinned: false},
+    'cine': {title: 'CinemA', path: 'media.html', icon: 'https://cdn-icons-png.flaticon.com/512/3163/3163478.png', pinned: false},
     'cini': {title: 'Cini AI', path: 'app-cini.html', icon: 'icon-arc.svg', pinned: false},
     'extensions': {title: 'Extensions', path: 'extensions.html', icon: 'icon-extensions.svg', pinned: false},
     'discord': {title: 'Discord', path: 'app-discord.html', icon: 'https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png', pinned: false},
-    'roblox': {title: 'Roblox', path: 'app-roblox.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9KvNyFWMg_bjo_q_1IVLKFWbfCeonn2qDow&s', pinned: false},
+    'roblox': {title: 'Roblox', path: 'app-roblox.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9KvNyFWMg_bjo_q_1IVLKFWbfCeonn2qDow&s', pinned: true},
     'android': {title: 'Android', path: 'app-android.html', icon: 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/android-icon.png', pinned: false},
     'VM': {title: 'Windows Virtual-Machine', path: 'app-vm.html', icon: 'https://static1.squarespace.com/static/68e69c83884dc82cc035a923/69454e29c6db7516b2566fca/69454e32c6db7516b256749a/1766149682532/Virtualbox_logo.png?format=original', pinned: false},
     'crunchyroll': {title: 'CrunchyRoll', path: 'app-crunchy.html', icon: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a0a4547a-06c5-4740-b87a-ca9c4fa0171e/dduaesk-2b3e85d2-3116-4eb5-8260-f413d1fc670e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi9hMGE0NTQ3YS0wNmM1LTQ3NDAtYjg3YS1jYTljNGZhMDE3MWUvZGR1YWVzay0yYjNlODVkMi0zMTE2LTRlYjUtODI2MC1mNDEzZDFmYzY3MGUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.vReffTSSKpde4w8EwFxz_CttxlLay8fXOq0goYh6rsg', pinned: false},
     'Geforce': {title: 'GEFORCE NOW', path: 'app-geforce.html', icon: 'https://play-lh.googleusercontent.com/_-b_HQXrVyyhZSHj_BoE9u_-cxkcHDH_yLX5rDjJsFMIfsCNQs9F3QP4JvEFcWaSIz0=w240-h480-rw', pinned: false},
-    'Fortnite': {title: 'Fortnite', path: 'app-fortnite.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShiXrQ-cvZeDyQNPIZCv_hsaUCAe5j_rXJ7Q&s', pinned: false},
-    'RocketL': {title: 'Rocket League', path: 'app-rocketl.html', icon: 'https://ygo-assets-entities-us.yougov.net/87bb7a16-2b62-11e8-82b1-37bb0d207ced.jpg?zcw=518&zch=518&zct=10&zcl=0', pinned: false},
-    'rivals': {title: 'Rivals', path: 'app-rivals.html', icon: 'icon-rivals.svg', pinned: false},
-    'Xbox': {title: 'Xbox', path: 'app-xbox.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRknRQh-WRK4F75YB3EAlfrsqAk66Xjn45sBg&s', pinned: false},
-    'ps5': {title: 'PS5 Emulator', path: 'app-ps5.html', icon: 'https://cdn-icons-png.flaticon.com/512/732/732244.png', pinned: false},
+    'Fortnite': {title: 'Fortnite', path: 'app-fortnite.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShiXrQ-cvZeDyQNPIZCv_hsaUCAe5j_rXJ7Q&s', pinned: true},
+    'RocketL': {title: 'Rocket League', path: 'app-rocketl.html', icon: 'https://ygo-assets-entities-us.yougov.net/87bb7a16-2b62-11e8-82b1-37bb0d207ced.jpg?zcw=518&zch=518&zct=10&zcl=0', pinned: true},
+    'rivals': {title: 'Rivals', path: 'app-rivals.html', icon: 'icon-rivals.svg', pinned: true},
+    'Xbox': {title: 'Xbox', path: 'app-xbox.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRknRQh-WRK4F75YB3EAlfrsqAk66Xjn45sBg&s', pinned: true},
+    'ps5': {title: 'PS5 Emulator', path: 'app-ps5.html', icon: 'https://cdn-icons-png.flaticon.com/512/732/732244.png', pinned: true},
 };
 
 var savedPins = localStorage.getItem('c_pins_v2');
@@ -70,7 +70,7 @@ var wallpaperRegistry = {
 };
 
 var sysConfig = JSON.parse(localStorage.getItem('anchor_sys_config')) || {};
-if(sysConfig.mono === undefined) sysConfig.mono = true;
+if(sysConfig.mono === undefined) sysConfig.mono = false;
 if(sysConfig.optBg === undefined) sysConfig.optBg = false;
 if(sysConfig.shortBoot === undefined) sysConfig.shortBoot = true;
 if(sysConfig.wpLoop === undefined) sysConfig.wpLoop = false;
