@@ -2,27 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Anchor Browser</title>
-    <link rel="icon" href="icon-chrome.svg" type="image/svg+xml">
+    <link rel="icon" type="image/svg+xml" href="icon-chrome.svg">
+    
+    <!-- Anchor OS Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- Scramjet Main Script -->
     <script src="https://cdn.jsdelivr.net/gh/Destroyed12121/Staticsj@main/JS/scramjet.all.js"></script>
     
     <style>
         :root {
-            --bg: #0a0a12;
-            --surface: #14142080;
-            --surface-solid: #141420;
-            --surface-hover: #1e1e2e;
-            --border: #2a2a3e;
-            --accent: #5b8def;
-            --accent-glow: #5b8def40;
-            --accent-hover: #7ba4f5;
-            --text: #e8e8f0;
-            --text-muted: #7a7a92;
-            --danger: #ef5b5b;
-            --radius: 12px;
+            --bg: #050508;
+            --surface: #0f0f1a;
+            --surface-solid: #12121e;
+            --surface-hover: #1a1a2e;
+            --border: #2a2a4a;
+            --accent: #00f3ff;
+            --accent-glow: rgba(0, 243, 255, 0.2);
+            --accent-hover: #5dffff;
+            --text: #e0e0ff;
+            --text-muted: #707090;
+            --danger: #ff0040;
             --transition: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -31,100 +34,110 @@
         html, body {
             height: 100%; width: 100%; overflow: hidden;
             background: var(--bg); color: var(--text);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            font-size: 14px; -webkit-font-smoothing: antialiased;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 15px; -webkit-font-smoothing: antialiased;
         }
 
         /* ===== Loading Screen ===== */
         #loading {
             position: fixed; inset: 0; z-index: 200;
             display: flex; flex-direction: column;
-            align-items: center; justify-content: center; gap: 28px;
-            background: radial-gradient(ellipse at center, #12121e 0%, var(--bg) 70%);
+            align-items: center; justify-content: center; gap: 24px;
+            background: radial-gradient(ellipse at center, #0a0a12 0%, #000 70%);
             transition: opacity 0.4s ease;
         }
         .loader-ring {
-            width: 56px; height: 56px;
-            border: 3px solid var(--border);
+            width: 60px; height: 60px;
+            border: 2px solid var(--border);
             border-top-color: var(--accent);
+            border-right-color: var(--accent);
             border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-            box-shadow: 0 0 24px var(--accent-glow);
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 20px var(--accent-glow), inset 0 0 10px var(--accent-glow);
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+        .boot-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px; font-weight: 900;
+            color: var(--accent); letter-spacing: 4px;
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
         .loader-text {
-            color: var(--text-muted); font-size: 14px;
-            letter-spacing: 0.6px; animation: pulse 1.5s ease-in-out infinite;
+            font-family: 'Rajdhani', sans-serif;
+            color: var(--text-muted); font-size: 14px; font-weight: 600;
+            letter-spacing: 1px; animation: pulse 1.5s ease-in-out infinite;
+            text-transform: uppercase;
         }
         @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
 
         /* ===== Toolbar ===== */
         #toolbar {
-            position: fixed; top: 0; left: 0; right: 0; height: 54px; z-index: 50;
-            display: flex; align-items: center; gap: 6px; padding: 0 10px;
-            background: var(--surface);
+            position: fixed; top: 0; left: 0; right: 0; height: 50px; z-index: 50;
+            display: flex; align-items: center; gap: 8px; padding: 0 12px;
+            background: rgba(10, 10, 20, 0.8);
             border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
         .brand {
-            display: flex; align-items: center; gap: 9px;
-            padding: 0 6px 0 2px; text-decoration: none; color: var(--text);
-            font-weight: 700; font-size: 15px; white-space: nowrap;
-        }
-        .brand-logo {
-            width: 28px; height: 28px; border-radius: 8px;
-            background: linear-gradient(135deg, var(--accent), #4a6dc4);
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-weight: 900; font-size: 15px;
-            box-shadow: 0 2px 8px var(--accent-glow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px; font-weight: 900; color: var(--accent);
+            text-transform: uppercase; letter-spacing: 2px;
+            text-decoration: none; margin-right: 10px;
+            text-shadow: 0 0 8px var(--accent-glow);
         }
 
         .nav-btn {
-            width: 36px; height: 36px; border: none; border-radius: 10px;
-            background: transparent; color: var(--text-muted);
+            width: 36px; height: 36px; border: 1px solid var(--border);
+            background: rgba(255,255,255,0.02); color: var(--text-muted);
             cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: var(--transition); flex-shrink: 0;
+            transition: var(--transition); flex-shrink: 0; border-radius: 4px;
+            font-size: 14px;
         }
-        .nav-btn:hover { background: var(--surface-hover); color: var(--text); }
+        .nav-btn:hover {
+            background: var(--accent-glow); color: var(--accent);
+            border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow);
+        }
         .nav-btn:active { transform: scale(0.92); }
-        .nav-btn svg { width: 20px; height: 20px; }
 
         #address-bar {
-            flex: 1; display: flex; align-items: center; gap: 0;
-            background: var(--bg); border: 1px solid var(--border);
-            border-radius: 10px; padding: 0 3px 0 14px; min-width: 0;
+            flex: 1; display: flex; align-items: center; gap: 0; height: 36px;
+            background: #000; border: 1px solid var(--border);
+            border-radius: 4px; padding: 0 4px 0 14px; min-width: 0;
             transition: var(--transition);
         }
         #address-bar:focus-within {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-glow);
+            border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow);
         }
         #address-input {
             flex: 1; min-width: 0; border: none; background: transparent;
-            color: var(--text); font-size: 14px; padding: 9px 0; outline: none;
+            color: var(--text); font-size: 15px; padding: 8px 0; outline: none;
+            font-family: 'Rajdhani', sans-serif; font-weight: 600;
         }
         #address-input::placeholder { color: var(--text-muted); }
         #go-btn {
-            border: none; background: var(--accent); color: white;
-            padding: 7px 18px; border-radius: 8px; font-size: 13px;
-            font-weight: 600; cursor: pointer; transition: var(--transition);
-            white-space: nowrap; flex-shrink: 0;
+            border: 1px solid var(--accent); background: transparent; color: var(--accent);
+            padding: 6px 18px; border-radius: 4px; font-size: 13px; font-weight: 700;
+            cursor: pointer; transition: var(--transition); white-space: nowrap;
+            font-family: 'Orbitron', sans-serif; letter-spacing: 1px;
         }
-        #go-btn:hover { background: var(--accent-hover); }
+        #go-btn:hover {
+            background: var(--accent); color: #000;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
         #go-btn:active { transform: scale(0.95); }
 
         /* ===== Load Progress Bar ===== */
         #progress-bar {
-            position: fixed; top: 54px; left: 0; height: 2px;
+            position: fixed; top: 50px; left: 0; height: 2px;
             background: var(--accent); width: 0%; z-index: 55;
             transition: width 0.3s ease, opacity 0.4s ease;
-            box-shadow: 0 0 8px var(--accent-glow);
+            box-shadow: 0 0 8px var(--accent);
         }
 
         /* ===== Frame ===== */
         #frame-container {
-            position: fixed; top: 54px; left: 0; right: 0; bottom: 0;
+            position: fixed; top: 50px; left: 0; right: 0; bottom: 0;
             background: var(--bg);
         }
         #frame-container iframe {
@@ -134,72 +147,88 @@
         /* ===== Error Screen ===== */
         #error-screen {
             display: none; position: fixed; inset: 0; z-index: 200;
-            background: var(--bg); overflow-y: auto; padding-top: 54px;
+            background: #000; overflow-y: auto; padding-top: 50px;
         }
         .error-card {
-            max-width: 580px; margin: 60px auto; padding: 36px 32px;
-            background: var(--surface-solid); border: 1px solid var(--border);
-            border-radius: 16px; text-align: center;
+            max-width: 600px; margin: 60px auto; padding: 40px;
+            background: rgba(20, 20, 30, 0.9); border: 1px solid var(--danger);
+            border-radius: 8px; text-align: center;
+            box-shadow: 0 0 30px rgba(255, 0, 64, 0.2);
         }
         .error-icon {
-            width: 56px; height: 56px; margin: 0 auto 22px;
-            background: rgba(239, 91, 91, 0.12); border-radius: 50%;
+            width: 60px; height: 60px; margin: 0 auto 20px;
+            background: rgba(255, 0, 64, 0.1); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: var(--danger);
+            color: var(--danger); font-size: 24px;
         }
-        .error-card h1 { font-size: 20px; margin-bottom: 10px; }
-        .error-card > p { color: var(--text-muted); line-height: 1.6; margin-bottom: 18px; }
+        .error-card h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px; margin-bottom: 10px; color: var(--danger);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .error-card > p { color: var(--text-muted); line-height: 1.6; margin-bottom: 18px; font-size: 16px; }
         .error-code {
-            background: var(--bg); border: 1px solid var(--border);
-            border-radius: 10px; padding: 16px; text-align: left;
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            font-size: 12.5px; color: var(--text-muted);
+            background: #000; border: 1px solid var(--border);
+            border-radius: 4px; padding: 16px; text-align: left;
+            font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; color: var(--text-muted);
             margin: 18px 0; overflow-x: auto; white-space: pre; line-height: 1.5;
         }
-        .error-actions { display: flex; gap: 10px; justify-content: center; margin-top: 22px; flex-wrap: wrap; }
-        .btn-primary {
-            background: var(--accent); color: white; border: none;
-            padding: 10px 22px; border-radius: 10px; font-size: 14px;
-            font-weight: 600; cursor: pointer; text-decoration: none; transition: var(--transition);
+        .error-actions { display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+        .btn-primary, .btn-secondary {
+            padding: 12px 24px; border-radius: 4px; font-size: 14px; font-weight: 700;
+            cursor: pointer; text-decoration: none; transition: var(--transition);
+            font-family: 'Orbitron', sans-serif; letter-spacing: 1px;
         }
-        .btn-primary:hover { background: var(--accent-hover); }
-        .btn-secondary {
-            background: var(--surface-hover); color: var(--text);
-            border: 1px solid var(--border); padding: 10px 22px;
-            border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition);
-        }
-        .btn-secondary:hover { background: var(--border); }
+        .btn-primary { background: var(--danger); color: #fff; border: 1px solid var(--danger); }
+        .btn-primary:hover { box-shadow: 0 0 15px rgba(255, 0, 64, 0.4); }
+        .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
         /* ===== Settings Dropdown ===== */
         #settings-dropdown {
-            display: none; position: fixed; top: 54px; right: 10px;
-            z-index: 60; width: 300px; padding: 16px;
-            background: var(--surface-solid); border: 1px solid var(--border);
-            border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+            display: none; position: fixed; top: 60px; right: 12px;
+            z-index: 60; width: 320px; padding: 20px;
+            background: rgba(10, 10, 20, 0.95);
+            border: 1px solid var(--accent); border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 15px var(--accent-glow);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
         #settings-dropdown.open { display: block; animation: slideDown 0.2s ease; }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-        #settings-dropdown h3 { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-        #settings-dropdown label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+        #settings-dropdown h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px; color: var(--accent); margin-bottom: 15px;
+            text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 1px solid var(--border); padding-bottom: 8px;
+        }
+        #settings-dropdown label {
+            display: block; font-size: 13px; color: var(--text-muted);
+            margin-bottom: 8px; font-weight: 600;
+        }
         #settings-dropdown input {
-            width: 100%; padding: 9px 12px; border: 1px solid var(--border);
-            border-radius: 8px; background: var(--bg); color: var(--text);
-            font-size: 13px; outline: none; transition: var(--transition);
+            width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+            border-radius: 4px; background: #000; color: var(--text);
+            font-size: 14px; outline: none; transition: var(--transition);
+            font-family: 'Rajdhani', sans-serif; font-weight: 600;
         }
-        #settings-dropdown input:focus { border-color: var(--accent); }
+        #settings-dropdown input:focus { border-color: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
         #settings-dropdown .save-btn {
-            width: 100%; margin-top: 14px; padding: 9px; border: none;
-            border-radius: 8px; background: var(--accent); color: white;
-            font-weight: 600; font-size: 13px; cursor: pointer; transition: var(--transition);
+            width: 100%; margin-top: 16px; padding: 10px; border: 1px solid var(--accent);
+            border-radius: 4px; background: transparent; color: var(--accent);
+            font-weight: 700; font-size: 14px; cursor: pointer; transition: var(--transition);
+            font-family: 'Orbitron', sans-serif; letter-spacing: 1px;
         }
-        #settings-dropdown .save-btn:hover { background: var(--accent-hover); }
+        #settings-dropdown .save-btn:hover {
+            background: var(--accent); color: #000;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
 
         /* ===== Responsive ===== */
         @media (max-width: 600px) {
-            .brand span { display: none; }
+            .brand { font-size: 0; margin-right: 0; }
             .nav-btn { width: 34px; height: 34px; }
-            #toolbar { padding: 0 6px; gap: 3px; }
-            #go-btn { padding: 7px 12px; }
+            #toolbar { padding: 0 6px; gap: 4px; }
+            #go-btn { padding: 6px 12px; }
             #address-bar { padding: 0 2px 0 10px; }
         }
     </style>
@@ -209,33 +238,31 @@
 <!-- Loading -->
 <div id="loading">
     <div class="loader-ring"></div>
-    <div class="loader-text">Connecting to Anchor Browser…</div>
+    <div class="boot-logo">ANCHOR BROWSER</div>
+    <div class="loader-text">INITIALIZING PROXY...</div>
 </div>
 
 <!-- Toolbar -->
 <header id="toolbar">
-    <a href="index.html" class="brand">
-        <div class="brand-logo">A</div>
-        <span>Anchor</span>
-    </a>
+    <a href="index.html" class="brand">ANCHOR</a>
     <button class="nav-btn" id="back-btn" title="Back (Alt+←)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <i class="fas fa-chevron-left"></i>
     </button>
     <button class="nav-btn" id="forward-btn" title="Forward (Alt+→)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <i class="fas fa-chevron-right"></i>
     </button>
     <button class="nav-btn" id="reload-btn" title="Reload (Ctrl+R)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+        <i class="fas fa-rotate-right"></i>
     </button>
     <form id="address-bar" autocomplete="off">
         <input id="address-input" type="text" placeholder="Search Google or type a URL" spellcheck="false" aria-label="Address bar">
-        <button id="go-btn" type="submit">Go</button>
+        <button id="go-btn" type="submit">GO</button>
     </form>
     <button class="nav-btn" id="settings-btn" title="Settings">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        <i class="fas fa-gear"></i>
     </button>
     <button class="nav-btn" id="fullscreen-btn" title="Fullscreen (F11)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+        <i class="fas fa-expand"></i>
     </button>
 </header>
 
@@ -250,16 +277,16 @@
     <h3>Proxy Settings</h3>
     <label for="wisp-input">Wisp Server URL</label>
     <input id="wisp-input" type="text" placeholder="wss://...">
-    <button class="save-btn" id="save-settings">Save & Reload</button>
+    <button class="save-btn" id="save-settings">SAVE & RELOAD</button>
 </div>
 
 <!-- Error -->
 <div id="error-screen">
     <div class="error-card">
         <div class="error-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <i class="fas fa-exclamation-triangle"></i>
         </div>
-        <h1 id="error-title">Unable to Start Proxy</h1>
+        <h1>Proxy Initialization Failed</h1>
         <p id="error-message"></p>
         <div class="error-code" id="error-code"></div>
         <div class="error-actions">
@@ -274,8 +301,6 @@
    CONFIG
    ============================================================ */
 const SCRAMJET_CDN   = 'https://cdn.jsdelivr.net/gh/Destroyed12121/Staticsj@main/JS';
-const BARE_MUX_CDN   = 'https://cdn.jsdelivr.net/npm/@mercuryworkshop/bare-mux/dist';
-const EPOXY_CDN      = 'https://cdn.jsdelivr.net/npm/@mercuryworkshop/epoxy-transport@2.1.28/dist';
 const DEFAULT_WISP   = 'wss://anura.pro/wisp/';
 const DEFAULT_HOME   = 'https://www.google.com';
 
@@ -317,7 +342,6 @@ async function getScramjetControllerClass() {
     }
     if (window.ScramjetController) return window.ScramjetController;
     
-    // Fallback: wait for script to load
     for (let i = 0; i < 20; i++) {
         await new Promise(r => setTimeout(r, 200));
         if (window.$scramjetLoadController) {
@@ -327,52 +351,12 @@ async function getScramjetControllerClass() {
         if (window.ScramjetController) return window.ScramjetController;
     }
 
-    // Last resort: dynamic import
     try {
         const mod = await import(`${SCRAMJET_CDN}/scramjet.all.js`);
         return mod.ScramjetController || mod.default?.ScramjetController;
-    } catch (_) { /* fall through */ }
+    } catch (_) { }
 
     throw new Error('ScramjetController not found. The CDN script failed to load.');
-}
-
-async function initScramjet() {
-    const Controller = await getScramjetControllerClass();
-
-    const controller = new Controller({
-        files: {
-            wasm:  `${SCRAMJET_CDN}/scramjet.wasm.wasm`,
-            sync:  `${SCRAMJET_CDN}/scramjet.sync.js`,
-            all:   `${SCRAMJET_CDN}/scramjet.all.js`,
-        }
-    });
-
-    await controller.init();
-    return controller;
-}
-
-/* ============================================================
-   SERVICE WORKER & TRANSPORT (Using your local files)
-   ============================================================ */
-async function registerServiceWorker() {
-    if (!('serviceWorker' in navigator))
-        throw new Error('Service workers are not available in this browser.');
-
-    // Register your local sw.js that is in the root directory
-    const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
-    await navigator.serviceWorker.ready;
-    return reg;
-}
-
-async function setupTransport() {
-    const { BareMuxConnection } = await import(`${BARE_MUX_CDN}/index.mjs`);
-    
-    // Use your local bareworker.js
-    const connection = new BareMuxConnection('./bareworker.js');
-    const wisp = localStorage.getItem('anchorWisp') || DEFAULT_WISP;
-
-    await connection.setTransport(`${EPOXY_CDN}/index.mjs`, [{ wisp }]);
-    return { connection, wisp };
 }
 
 /* ============================================================
@@ -382,7 +366,7 @@ function showError(title, message, code) {
     document.getElementById('loading').style.display = 'none';
     const el = document.getElementById('error-screen');
     el.style.display = 'block';
-    document.getElementById('error-title').textContent = title;
+    document.querySelector('#error-screen h1').textContent = title;
     document.getElementById('error-message').textContent = message;
     const codeEl = document.getElementById('error-code');
     if (code) { codeEl.textContent = code; codeEl.style.display = 'block'; }
@@ -409,25 +393,42 @@ async function startBrowser() {
 
     try {
         // 1 — Scramjet controller
-        const controller = await initScramjet();
-
-        // 2 — Service worker (your local file)
-        const registration = await registerServiceWorker();
-
-        // 3 — BareMux transport (using your local file)
-        const { wisp } = await setupTransport();
+        const Controller = await getScramjetControllerClass();
+        const prefix = new URL('scramjet/', location.href).pathname;
         
-        // Send WISP URL to your service worker if it expects it
-        registration.active?.postMessage({ type: 'config', wispurl: wisp });
+        const controller = new Controller({
+            prefix: prefix,
+            files: {
+                wasm:  `${SCRAMJET_CDN}/scramjet.wasm.wasm`,
+                sync:  `${SCRAMJET_CDN}/scramjet.sync.js`,
+                all:   `${SCRAMJET_CDN}/scramjet.all.js`,
+            }
+        });
+
+        await controller.init();
+
+        // 2 — Register local Service Worker
+        if (!('serviceWorker' in navigator)) {
+            throw new Error('Service workers are not available in this browser.');
+        }
+        const registration = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+        await navigator.serviceWorker.ready;
+        
+        // 3 — Send Wisp Config to Service Worker
+        const wisp = localStorage.getItem('anchorWisp') || DEFAULT_WISP;
+        navigator.serviceWorker.controller.postMessage({ 
+            type: 'config', 
+            wispurl: wisp,
+            servers: [{ url: wisp, name: 'Default Wisp' }], 
+            autoswitch: true 
+        });
 
         // 4 — Create browser frame via Scramjet
         const frame = controller.createFrame();
         browserFrame = frame;
 
-        frame.frame.style.cssText =
-            'width:100%;height:100%;border:none;display:block;';
-        frame.frame.setAttribute('allow',
-            'autoplay; fullscreen; gamepad; microphone; camera; clipboard-read; clipboard-write; encrypted-media');
+        frame.frame.style.cssText = 'width:100%;height:100%;border:none;display:block;';
+        frame.frame.setAttribute('allow', 'autoplay; fullscreen; gamepad; microphone; camera; clipboard-read; clipboard-write; encrypted-media');
         frame.frame.setAttribute('allowfullscreen', '');
         frame.frame.title = 'Anchor Browser';
 
@@ -438,7 +439,13 @@ async function startBrowser() {
             setTimeout(() => { loading.style.display = 'none'; }, 400);
         });
 
-        // Append frame and navigate
+        setTimeout(() => {
+            if (loading.style.display !== 'none') {
+                loading.style.opacity = '0';
+                setTimeout(() => { loading.style.display = 'none'; }, 400);
+            }
+        }, 10000);
+
         document.getElementById('frame-container').appendChild(frame.frame);
         showProgress();
         frame.go(currentUrl);
@@ -446,7 +453,7 @@ async function startBrowser() {
     } catch (error) {
         console.error('[Anchor] Init error:', error);
         showError(
-            'Unable to Start Proxy',
+            'Proxy Initialization Failed',
             error.message || 'An unknown error occurred during initialization.',
             error.stack || ''
         );
