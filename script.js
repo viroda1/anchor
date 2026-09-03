@@ -4,15 +4,15 @@ var _devBuildVer = "3.0.1";
 var APPS = {
     'anchor': {title: 'Anchor Hub', path: 'anchor.html', icon: 'arch-mark.svg', pinned: true},
     'term': {title: 'Anchor Music', path: 'app-spotify.html', icon: 'https://cdn.pixabay.com/photo/2016/10/22/00/15/spotify-1759471_1280.jpg', pinned: true},
-    'files': {title: 'Anchor Files', path: 'files.html', icon: 'https://cdn-icons-png.flaticon.com/512/3767/3767084.png', pinned: true},
+    'files': {title: 'Anchor Files', path: 'files.html', icon: 'icon-files.svg', pinned: true},
     'web': {title: 'Anchor Web', path: 'app-web.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeD89ZcX5W1FBtal7RerasT27q-OmZqnBixQ&s', pinned: true},
     'settings': {title: 'Anchor Settings', internal: true, icon: 'https://cdn.iconscout.com/icon/free/png-256/free-apple-settings-icon-svg-download-png-493162.png', pinned: true},
     'calculator': {title: 'Anchor Calculator', path: 'app-calculator.html', icon: 'https://cdn-icons-png.flaticon.com/512/104/104686.png', pinned: false},
     'study': {title: 'Anchor Study', path: 'app-study.html', icon: 'https://cdn-icons-png.flaticon.com/512/3074/3074058.png', pinned: false},
-    'wolfy': {title: 'Wolfy AI', path: 'wolfy-ai.html', icon: 'arch-mark.svg', pinned: true},
-    'chat': {title: 'Anchor Chat', path: 'chat.html', icon: 'https://cdn-icons-png.flaticon.com/512/134/134914.png', pinned: false},
-    'education': {title: 'Anchor Academy', path: 'education.html', icon: 'https://cdn-icons-png.flaticon.com/512/167/167707.png', pinned: false},
-    'extensions': {title: 'Extensions', path: 'extensions.html', icon: 'https://cdn-icons-png.flaticon.com/512/126/126472.png', pinned: false},
+    'wolfy': {title: 'Wolfy AI', path: 'wolfy-ai.html', icon: 'icon-wolfy.svg', pinned: true},
+    'chat': {title: 'Anchor Chat', path: 'chat.html', icon: 'icon-chat.svg', pinned: false},
+    'education': {title: 'Anchor Academy', path: 'education.html', icon: 'icon-education.svg', pinned: false},
+    'extensions': {title: 'Extensions', path: 'extensions.html', icon: 'icon-extensions.svg', pinned: false},
     'discord': {title: 'Discord', path: 'app-discord.html', icon: 'https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png', pinned: false},
     'roblox': {title: 'Roblox', path: 'app-roblox.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9KvNyFWMg_bjo_q_1IVLKFWbfCeonn2qDow&s', pinned: false},
     'android': {title: 'Android', path: 'app-android.html', icon: 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/android-icon.png', pinned: false},
@@ -21,6 +21,7 @@ var APPS = {
     'Geforce': {title: 'GEFORCE NOW', path: 'app-geforce.html', icon: 'https://play-lh.googleusercontent.com/_-b_HQXrVyyhZSHj_BoE9u_-cxkcHDH_yLX5rDjJsFMIfsCNQs9F3QP4JvEFcWaSIz0=w240-h480-rw', pinned: false},
     'Fortnite': {title: 'Fortnite', path: 'app-fortnite.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShiXrQ-cvZeDyQNPIZCv_hsaUCAe5j_rXJ7Q&s', pinned: false},
     'RocketL': {title: 'Rocket League', path: 'app-rocketl.html', icon: 'https://ygo-assets-entities-us.yougov.net/87bb7a16-2b62-11e8-82b1-37bb0d207ced.jpg?zcw=518&zch=518&zct=10&zcl=0', pinned: false},
+    'rivals': {title: 'Rivals', path: 'app-rivals.html', icon: 'icon-rivals.svg', pinned: false},
     'Xbox': {title: 'Xbox', path: 'app-xbox.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRknRQh-WRK4F75YB3EAlfrsqAk66Xjn45sBg&s', pinned: false},
 };
 
