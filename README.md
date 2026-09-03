@@ -11,8 +11,10 @@ an independent AI assistant powered through a server-side Groq connection.
 npm start
 ```
 
-Set `GROQ_API_KEY` in the server environment before using Ask Wolfy. Never put
-the key in browser code, local storage, or a committed file.
+Set `GROQ_API_KEY` in the server environment before using Ask Wolfy. Copy
+`.env.example` as a reference and provide the key through your hosting
+provider's environment-variable settings. Never put the key in browser code
+or commit it to the repository.
 
 ## Deploy
 

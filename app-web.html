@@ -26,7 +26,7 @@
 </head>
 <body>
     <header id="browser-toolbar">
-        <a href="../index.html" class="browser-brand"><img src="arch-mark.svg" alt=""> Anchor Browser</a>
+        <a href="index.html" class="browser-brand"><img src="arch-mark.svg" alt=""> Anchor Browser</a>
         <button id="back" aria-label="Back">&#8592;</button><button id="forward" aria-label="Forward">&#8594;</button><button id="reload" aria-label="Reload">&#8635;</button>
         <form id="address"><input id="address-input" value="https://www.google.com" aria-label="Address"><button>Go</button></form>
         <button id="full" aria-label="Fullscreen">&#9974;</button>
@@ -40,10 +40,12 @@
             if (scramjetStarted) return;
             scramjetStarted = true;
             const loading = document.getElementById('ld');
+            const appBase = new URL('.', document.baseURI);
+            const assetUrl = (path) => new URL(path, appBase).toString();
             try {
                 const { ScramjetController } = window.$scramjetLoadController();
                 const controller = new ScramjetController({
-                    prefix: '/scramjet/',
+                    prefix: new URL('scramjet/', appBase).pathname,
                     files: {
                         wasm: 'https://cdn.jsdelivr.net/gh/Destroyed12121/Staticsj@main/JS/scramjet.wasm.wasm',
                         all: 'https://cdn.jsdelivr.net/gh/Destroyed12121/Staticsj@main/JS/scramjet.all.js',
@@ -51,10 +53,10 @@
                     }
                 });
                 await controller.init();
-                const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+                const registration = await navigator.serviceWorker.register(assetUrl('sw.js'), { scope: appBase.pathname });
                 await navigator.serviceWorker.ready;
                 const BareMux = await import('https://cdn.jsdelivr.net/npm/@mercuryworkshop/bare-mux/dist/index.mjs');
-                const connection = new BareMux.BareMuxConnection('/bareworker.js');
+                const connection = new BareMux.BareMuxConnection(assetUrl('bareworker.js'));
                 const wisp = localStorage.getItem('anchorWisp') || 'wss://anura.pro/wisp/';
                 await connection.setTransport('https://cdn.jsdelivr.net/npm/@mercuryworkshop/epoxy-transport@2.1.28/dist/index.mjs', [{ wisp }]);
                 registration.active?.postMessage({ type: 'config', wispurl: wisp });
