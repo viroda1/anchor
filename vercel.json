@@ -1,4 +1,4 @@
 {
-  "functions": { "api/ask-arc.js": { "runtime": "nodejs20.x" } },
-  "rewrites": [{ "source": "/api/ask-arc", "destination": "/api/ask-arc.js" }]
+  "functions": { "ask-arc.js": { "runtime": "nodejs20.x" } },
+  "rewrites": [{ "source": "/api/ask-arc", "destination": "/ask-arc.js" }]
 }

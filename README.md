@@ -25,7 +25,8 @@ or commit it to the repository.
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/viroda1/anchor)
 
 For every provider, add `GROQ_API_KEY` as an environment variable. Render runs
-`npm start`; Netlify uses `netlify/functions`; Vercel uses `api/ask-arc.js`.
+`npm start`; Netlify uses the root-level `netlify-ask-arc.js`; Vercel uses
+`ask-arc.js`.
 
 Better Movies Site
 

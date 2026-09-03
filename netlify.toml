@@ -1,8 +1,8 @@
 [build]
   publish = "."
-  functions = "netlify/functions"
+  functions = "."
 
 [[redirects]]
   from = "/api/ask-arc"
-  to = "/.netlify/functions/ask-arc"
+  to = "/.netlify/functions/netlify-ask-arc"
   status = 200

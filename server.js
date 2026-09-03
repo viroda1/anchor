@@ -16,7 +16,7 @@ async function askArc(body) {
 
 createServer(async (request, response) => {
   try {
-    if (request.url === '/api/ask-arc' && request.method === 'POST') {
+    if ((request.url === '/api/ask-arc' || request.url === '/ask-arc') && request.method === 'POST') {
       let raw = ''; for await (const chunk of request) raw += chunk;
       const result = await askArc(JSON.parse(raw || '{}'));
       response.writeHead(result.status, {'Content-Type':'application/json'}); response.end(JSON.stringify(result.body)); return;
