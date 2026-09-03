@@ -3,6 +3,6 @@
   functions = "netlify/functions"
 
 [[redirects]]
-  from = "/api/ask-wolfy"
-  to = "/.netlify/functions/ask-wolfy"
+  from = "/api/ask-arc"
+  to = "/.netlify/functions/ask-arc"
   status = 200

@@ -5,13 +5,12 @@ var APPS = {
     'anchor': {title: 'Anchor Hub', path: 'anchor.html', icon: 'arch-mark.svg', pinned: true},
     'term': {title: 'Anchor Music', path: 'app-spotify.html', icon: 'https://cdn.pixabay.com/photo/2016/10/22/00/15/spotify-1759471_1280.jpg', pinned: true},
     'files': {title: 'Anchor Files', path: 'files.html', icon: 'icon-files.svg', pinned: true},
-    'web': {title: 'Anchor Web', path: 'app-web.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeD89ZcX5W1FBtal7RerasT27q-OmZqnBixQ&s', pinned: true},
+    'web': {title: 'Anchor Browser', path: 'app-web.html', icon: 'icon-chrome.svg', pinned: true},
     'settings': {title: 'Anchor Settings', internal: true, icon: 'https://cdn.iconscout.com/icon/free/png-256/free-apple-settings-icon-svg-download-png-493162.png', pinned: true},
     'calculator': {title: 'Anchor Calculator', path: 'app-calculator.html', icon: 'https://cdn-icons-png.flaticon.com/512/104/104686.png', pinned: false},
-    'study': {title: 'Anchor Study', path: 'app-study.html', icon: 'https://cdn-icons-png.flaticon.com/512/3074/3074058.png', pinned: false},
-    'wolfy': {title: 'Wolfy AI', path: 'wolfy-ai.html', icon: 'icon-wolfy.svg', pinned: true},
+    'arc': {title: 'Arc AI', path: 'arc-ai.html', icon: 'icon-arc.svg', pinned: true},
     'chat': {title: 'Anchor Chat', path: 'chat.html', icon: 'icon-chat.svg', pinned: false},
-    'education': {title: 'Anchor Academy', path: 'education.html', icon: 'icon-education.svg', pinned: false},
+    'media': {title: 'Anchor Media', path: 'media.html', icon: 'icon-media.svg', pinned: false},
     'extensions': {title: 'Extensions', path: 'extensions.html', icon: 'icon-extensions.svg', pinned: false},
     'discord': {title: 'Discord', path: 'app-discord.html', icon: 'https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png', pinned: false},
     'roblox': {title: 'Roblox', path: 'app-roblox.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9KvNyFWMg_bjo_q_1IVLKFWbfCeonn2qDow&s', pinned: false},
@@ -44,7 +43,7 @@ var wallpaperRegistry = {
     "green": {id: "green", name: "Green Anime", url: "video-green.mp4", locked: false},
     "33A56": {id: "hunt_trait", name: "Hunt Showdown", url: "video-33a56.mp4", locked: true},
     "45E33": {id: "45E33", name: "45E33", url: "video-45e33.mp4", locked: false},
-    "55Cine": {id: "55Cine", name: "Cine 55", url: "video-55cine.png", locked: false},
+    "55Anchor": {id: "55Anchor", name: "Anchor 55", url: "video-55anchor.png", locked: false},
     "99Med": {id: "99Med", name: "99 Med", url: "video-99med.mp4", locked: false},
     "Brother": {id: "Brother", name: "Brother", url: "video-brother.mp4", locked: false},
     "F-1": {id: "F-1", name: "F-1 Formula", url: "video-f-1.mp4", locked: false},
@@ -1116,9 +1115,9 @@ if(cvsSnow) {
 
 var MODES = ['FAST', 'THINKING', 'LIVE'];
 var cMode = 0;
-var isWolfyActive = false;
+var isArcActive = false;
 var holdTimer = null;
-var hasBootWolfy = false;
+var hasBootArc = false;
 var expectKey = false;
 var sStream = null;
 var cImgB64 = null;
@@ -1128,7 +1127,7 @@ function checkApiKey() {
     let st = document.getElementById('status-text');
     let si = document.getElementById('status-icon');
     if(!st) return;
-    if(localStorage.getItem('wolfy_key')) {
+    if(localStorage.getItem('arc_key')) {
         st.textContent = "Secure"; st.className = "secure";
         si.innerHTML = '<svg class="secure-svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>';
     } else {
@@ -1142,15 +1141,15 @@ window.autoGrow = function(el) { el.style.height = "5px"; el.style.height = (el.
 
 window.addEventListener('keydown', function(e) {
     if(e.altKey && (e.code === 'KeyS' || e.key.toLowerCase() === 's')) {
-        if(!holdTimer && !isWolfyActive) {
+        if(!holdTimer && !isArcActive) {
             holdTimer = setTimeout(function() {
-                document.body.classList.add('wolfy-active');
-                isWolfyActive = true;
+                document.body.classList.add('arc-active');
+                isArcActive = true;
                 let cInp = document.getElementById('chat-input');
-                if(!hasBootWolfy) {
-                    let bs = document.getElementById('wolfy-boot-screen');
+                if(!hasBootArc) {
+                    let bs = document.getElementById('arc-boot-screen');
                     if(bs) bs.style.display = 'flex';
-                    setTimeout(function(){ document.getElementById('boot-wolfy-text').classList.add('typing'); }, 300);
+                    setTimeout(function(){ document.getElementById('boot-arc-text').classList.add('typing'); }, 300);
                     setTimeout(function(){ document.getElementById('boot-sub-text').classList.add('show'); }, 1100);
                     setTimeout(function() {
                         document.getElementById('boot-loader').style.opacity = '1';
@@ -1161,7 +1160,7 @@ window.addEventListener('keydown', function(e) {
                                 bs.style.filter = 'blur(10px)'; bs.style.opacity = '0';
                                 setTimeout(function() {
                                     bs.style.display = 'none';
-                                    hasBootWolfy = true;
+                                    hasBootArc = true;
                                     if(cInp) cInp.focus();
                                 }, 800);
                             }, 1800);
@@ -1172,8 +1171,8 @@ window.addEventListener('keydown', function(e) {
                 }
             }, 2000);
         }
-    } else if(e.code === 'Escape' && isWolfyActive) {
-        closeWolfy();
+    } else if(e.code === 'Escape' && isArcActive) {
+        closeArc();
     }
 });
 
@@ -1183,9 +1182,9 @@ window.addEventListener('keyup', function(e) {
     }
 });
 
-window.closeWolfy = function() {
-    document.body.classList.remove('wolfy-active');
-    isWolfyActive = false;
+window.closeArc = function() {
+    document.body.classList.remove('arc-active');
+    isArcActive = false;
 };
 
 var aMedia = null;
@@ -1384,13 +1383,13 @@ function chkFps() {
 }
 requestAnimationFrame(chkFps);
 
-var wolfyMessages = [];
+var arcMessages = [];
 
-function renderWolfyMessage(role, text) {
+function renderArcMessage(role, text) {
     var history = document.getElementById('chat-history');
     if(!history) return;
     var message = document.createElement('div');
-    message.className = 'message ' + (role === 'user' ? 'user' : 'wolfy');
+    message.className = 'message ' + (role === 'user' ? 'user' : 'arc');
     if(window.marked && role !== 'user') message.innerHTML = window.marked.parse(text);
     else message.textContent = text;
     history.appendChild(message);
@@ -1402,24 +1401,24 @@ window.handleSend = async function() {
     var orb = document.getElementById('action-orb');
     var text = input && input.value.trim();
     if(!text || (orb && orb.classList.contains('thinking'))) return;
-    wolfyMessages.push({role: 'user', content: text});
-    renderWolfyMessage('user', text);
+    arcMessages.push({role: 'user', content: text});
+    renderArcMessage('user', text);
     input.value = '';
     autoGrow(input);
     if(orb) orb.classList.add('thinking');
     try {
-        var response = await fetch('/api/ask-wolfy', {
+        var response = await fetch('/api/ask-arc', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({messages: wolfyMessages})
+            body: JSON.stringify({messages: arcMessages})
         });
         var data = await response.json();
         if(!response.ok) throw new Error(data.error || 'The Anchor AI service is unavailable.');
         var reply = data.reply || 'I did not receive a response.';
-        wolfyMessages.push({role: 'assistant', content: reply});
-        renderWolfyMessage('assistant', reply);
+        arcMessages.push({role: 'assistant', content: reply});
+        renderArcMessage('assistant', reply);
     } catch(error) {
-        renderWolfyMessage('assistant', error.message + ' Set GROQ_API_KEY on the deployment server.');
+        renderArcMessage('assistant', error.message + ' Set GROQ_API_KEY on the deployment server.');
     } finally {
         if(orb) orb.classList.remove('thinking');
         input.focus();
@@ -1454,8 +1453,8 @@ window.handleFileUpload = function(event) {
     reader.readAsDataURL(file);
 };
 
-var wolfyInput = document.getElementById('chat-input');
-if(wolfyInput) wolfyInput.addEventListener('keydown', function(event) {
+var arcInput = document.getElementById('chat-input');
+if(arcInput) arcInput.addEventListener('keydown', function(event) {
     if(event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
         handleSend();

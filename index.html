@@ -188,20 +188,20 @@
 <div id="toast-container" aria-live="polite"></div>
 
 <!-- Assistant -->
-<div id="wolfy-backdrop" onclick="closeWolfy()" aria-hidden="true"></div>
-<aside id="wolfy-window" aria-label="Ask Wolfy AI Assistant">
-  <div id="wolfy-boot-screen">
-    <div id="boot-wolfy-text" class="boot-wolfy">WOLFY.</div>
+<div id="arc-backdrop" onclick="closeArc()" aria-hidden="true"></div>
+<aside id="arc-window" aria-label="Arc AI Assistant">
+  <div id="arc-boot-screen">
+    <div id="boot-arc-text" class="boot-arc">ARC.</div>
     <div id="boot-sub-text" class="boot-sub">ANCHOR OS INTELLIGENCE</div>
     <div id="boot-loader" class="boot-loader">
       <div id="boot-spinner" class="spinner"></div>
-      <div id="boot-status-text" class="boot-status">Starting Ask Wolfy...</div>
-      <div class="boot-warning">Ask Wolfy uses the Anchor OS server connection.</div>
+      <div id="boot-status-text" class="boot-status">Starting Arc AI...</div>
+      <div class="boot-warning">Arc AI was created by Isaac Hughley and is hosted by AnchorOS.</div>
     </div>
   </div>
 
   <header id="status-pill">
-    <span>ASK WOLFY</span>
+    <span>ARC AI</span>
     <div id="status-icon" class="status-icon"></div>
     <span id="status-text"></span>
   </header>
@@ -216,7 +216,7 @@
     <button class="icon-btn" onclick="document.getElementById('file-upload').click()" aria-label="Upload Image">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
     </button>
-    <textarea id="chat-input" placeholder="Ask Wolfy..." rows="1" oninput="autoGrow(this)" aria-label="Chat Input"></textarea>
+    <textarea id="chat-input" placeholder="Ask Arc..." rows="1" oninput="autoGrow(this)" aria-label="Chat Input"></textarea>
     <div id="mode-toggle" onclick="cycleMode()" role="button" tabindex="0">FAST</div>
     <div id="action-orb" onclick="handleSend()" role="button" tabindex="0" aria-label="Send Message"></div>
   </footer>

@@ -1,4 +1,4 @@
 {
-  "functions": { "api/ask-wolfy.js": { "runtime": "nodejs20.x" } },
-  "rewrites": [{ "source": "/api/ask-wolfy", "destination": "/api/ask-wolfy.js" }]
+  "functions": { "api/ask-arc.js": { "runtime": "nodejs20.x" } },
+  "rewrites": [{ "source": "/api/ask-arc", "destination": "/api/ask-arc.js" }]
 }

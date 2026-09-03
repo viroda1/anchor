@@ -2,7 +2,7 @@ Anchor OS
 
 
 Anchor OS is a focused desktop workspace created by Isaac Hughley. It includes
-the Anchor Hub, browser, media, games, Calculator, Study cards, and Ask Wolfy,
+the Anchor Hub, browser, media, games, Calculator, and Arc AI,
 an independent AI assistant powered through a server-side Groq connection.
 
 ## Run locally
@@ -11,7 +11,7 @@ an independent AI assistant powered through a server-side Groq connection.
 npm start
 ```
 
-Set `GROQ_API_KEY` in the server environment before using Ask Wolfy. Copy
+Set `GROQ_API_KEY` in the server environment before using Arc AI. Copy
 `.env.example` as a reference and provide the key through your hosting
 provider's environment-variable settings. Never put the key in browser code
 or commit it to the repository.
@@ -25,7 +25,7 @@ or commit it to the repository.
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/viroda1/anchor)
 
 For every provider, add `GROQ_API_KEY` as an environment variable. Render runs
-`npm start`; Netlify uses `netlify/functions`; Vercel uses `api/ask-wolfy.js`.
+`npm start`; Netlify uses `netlify/functions`; Vercel uses `api/ask-arc.js`.
 
 Better Movies Site
 

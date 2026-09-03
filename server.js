@@ -7,18 +7,18 @@ const root = fileURLToPath(new URL('.', import.meta.url));
 const port = process.env.PORT || 3000;
 const types = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.json':'application/json'};
 
-async function askWolfy(body) {
-  if (!process.env.GROQ_API_KEY) return { status: 503, body: { error: 'Ask Wolfy is not configured yet.' } };
-  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', { method: 'POST', headers: {'Content-Type':'application/json', Authorization: `Bearer ${process.env.GROQ_API_KEY}`}, body: JSON.stringify({ model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile', messages: [{role:'system', content:'You are Ask Wolfy, the helpful AI inside Anchor OS, created by Isaac Hughley. Be concise, kind, and educational.'}, ...(body.messages || []).slice(-20)] }) });
+async function askArc(body) {
+  if (!process.env.GROQ_API_KEY) return { status: 503, body: { error: 'Arc AI is not configured yet.' } };
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', { method: 'POST', headers: {'Content-Type':'application/json', Authorization: `Bearer ${process.env.GROQ_API_KEY}`}, body: JSON.stringify({ model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile', messages: [{role:'system', content:'You are Arc AI, created by Isaac Hughley and hosted by AnchorOS. Be concise, kind, and educational.'}, ...(body.messages || []).slice(-20)] }) });
   const data = await response.json();
   return { status: response.ok ? 200 : response.status, body: response.ok ? { reply: data.choices?.[0]?.message?.content || 'No response returned.' } : { error: data.error?.message || 'The AI provider returned an error.' } };
 }
 
 createServer(async (request, response) => {
   try {
-    if (request.url === '/api/ask-wolfy' && request.method === 'POST') {
+    if (request.url === '/api/ask-arc' && request.method === 'POST') {
       let raw = ''; for await (const chunk of request) raw += chunk;
-      const result = await askWolfy(JSON.parse(raw || '{}'));
+      const result = await askArc(JSON.parse(raw || '{}'));
       response.writeHead(result.status, {'Content-Type':'application/json'}); response.end(JSON.stringify(result.body)); return;
     }
     const requested = decodeURIComponent((request.url || '/').split('?')[0]);

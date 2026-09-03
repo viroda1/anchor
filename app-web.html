@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anchor Browser</title>
+    <title>ANCHOR UBG</title>
     <script src="https://cdn.jsdelivr.net/gh/Destroyed12121/Staticsj@main/JS/scramjet.all.js" defer></script>
     <style>
         html, body { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
@@ -19,6 +19,7 @@
         #ld { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; color: #444; background: #000; }
         #browser-toolbar { position: fixed; z-index: 5; top: 12px; left: 14px; right: 14px; height: 52px; display: flex; align-items: center; gap: 7px; padding: 7px 10px; border: 1px solid #444; border-radius: 17px; background: #111d; backdrop-filter: blur(18px); }
         .browser-brand { display: flex; align-items: center; gap: 7px; color: #fff; text-decoration: none; font-weight: 700; white-space: nowrap; }.browser-brand img { width: 25px; height: 25px; }
+        #browser-fallback { display: none; position: fixed; inset: 0; z-index: 4; padding: 100px 24px 24px; background: #101418; color: #fff; text-align: center; } #browser-fallback a { display: inline-block; margin-top: 18px; padding: 12px 18px; border-radius: 10px; background: #8bd3ff; color: #101418; text-decoration: none; font-weight: 700; }
         #browser-toolbar button { min-width: 31px; height: 31px; border: 1px solid #444; border-radius: 50%; background: #222; color: #ddd; cursor: pointer; } #browser-toolbar button:hover { background: #fff; color: #000; }
         #address { display: flex; flex: 1; gap: 6px; margin-left: 8px; } #address input { min-width: 0; flex: 1; padding: 9px 13px; border: 1px solid #444; border-radius: 12px; background: #080808; color: #fff; outline: 0; } #address button { border: 0 !important; border-radius: 11px !important; background: #fff !important; color: #000 !important; }
         #ifr { padding-top: 70px; }
@@ -26,12 +27,13 @@
 </head>
 <body>
     <header id="browser-toolbar">
-        <a href="index.html" class="browser-brand"><img src="arch-mark.svg" alt=""> Anchor Browser</a>
+        <a href="index.html" class="browser-brand"><img src="icon-chrome.svg" alt=""> Anchor Browser</a>
         <button id="back" aria-label="Back">&#8592;</button><button id="forward" aria-label="Forward">&#8594;</button><button id="reload" aria-label="Reload">&#8635;</button>
         <form id="address"><input id="address-input" value="https://www.google.com" aria-label="Address"><button>Go</button></form>
         <button id="full" aria-label="Fullscreen">&#9974;</button>
     </header>
     <div id="ld">Connecting to Anchor Browser...</div>
+    <div id="browser-fallback"><h1>Anchor Browser proxy unavailable</h1><p>This deployment cannot start the service worker. Open the requested page directly or deploy Anchor on a host with service-worker support.</p><a id="browser-fallback-link" target="_blank" rel="noopener">Open destination</a></div>
     <iframe id="ifr" allowfullscreen allow="autoplay; fullscreen; gamepad; microphone; camera"></iframe>
 
     <script>
@@ -42,7 +44,17 @@
             const loading = document.getElementById('ld');
             const appBase = new URL('.', document.baseURI);
             const assetUrl = (path) => new URL(path, appBase).toString();
+            const destination = location.hash.slice(1) || 'https://www.google.com';
+            const showFallback = (error) => {
+                loading.style.display = 'none';
+                document.getElementById('browser-fallback').style.display = 'block';
+                const link = document.getElementById('browser-fallback-link');
+                link.href = destination;
+                link.textContent = `Open ${destination}`;
+                console.error('Anchor Browser proxy unavailable:', error);
+            };
             try {
+                if (!('serviceWorker' in navigator)) throw new Error('Service workers are unavailable here.');
                 const { ScramjetController } = window.$scramjetLoadController();
                 const controller = new ScramjetController({
                     prefix: new URL('scramjet/', appBase).pathname,
@@ -65,9 +77,9 @@
                 frame.frame.allowFullscreen = true;
                 frame.frame.addEventListener('load', () => { loading.style.display = 'none'; });
                 document.body.replaceChild(frame.frame, document.getElementById('ifr'));
-                frame.go(location.hash.slice(1) || 'https://www.google.com');
+                frame.go(destination);
             } catch (error) {
-                loading.textContent = `Anchor Browser could not connect: ${error.message}`;
+                showFallback(error);
             }
         }
         document.getElementById('back').onclick = () => history.back();
