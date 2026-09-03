@@ -423,9 +423,9 @@
         isPlaying: false,
         shuffle: false,
         loop: false,
-        userPlaylists: JSON.parse(localStorage.getItem('cinify_playlists')) || [],
-        likedIds: JSON.parse(localStorage.getItem('cinify_liked')) || [],
-        savedSongsCache: JSON.parse(localStorage.getItem('cinify_cache')) || {},
+        userPlaylists: JSON.parse(localStorage.getItem('anchor_music_playlists')) || [],
+        likedIds: JSON.parse(localStorage.getItem('anchor_music_liked')) || [],
+        savedSongsCache: JSON.parse(localStorage.getItem('anchor_music_cache')) || {},
         ctxTarget: null 
     };
 
@@ -710,9 +710,9 @@
 
     const data = {
         save: () => {
-            localStorage.setItem('cinify_playlists', JSON.stringify(state.userPlaylists));
-            localStorage.setItem('cinify_liked', JSON.stringify(state.likedIds));
-            localStorage.setItem('cinify_cache', JSON.stringify(state.savedSongsCache));
+            localStorage.setItem('anchor_music_playlists', JSON.stringify(state.userPlaylists));
+            localStorage.setItem('anchor_music_liked', JSON.stringify(state.likedIds));
+            localStorage.setItem('anchor_music_cache', JSON.stringify(state.savedSongsCache));
         },
         toggleLike: (song) => {
             const isLiked = state.likedIds.includes(song.id);

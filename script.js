@@ -1,19 +1,21 @@
-var _SYSTEM_PATHS = ["C:/Windows/System32/kernel32.dll", "/var/www/html/cine-os/", "https://cine-os.local/api/v1/auth"];
+var _SYSTEM_PATHS = ["C:/Windows/System32/kernel32.dll", "/var/www/html/anchor-os/", "https://anchor-os.local/api/v1/auth"];
 var _devBuildVer = "3.0.1";
 
 var APPS = {
-    'cine': {title: 'Anchor Hub', path: 'app-cine.html', icon: 'arch-mark.svg', pinned: true},
+    'anchor': {title: 'Anchor Hub', path: 'anchor.html', icon: 'arch-mark.svg', pinned: true},
     'term': {title: 'Anchor Music', path: 'app-spotify.html', icon: 'https://cdn.pixabay.com/photo/2016/10/22/00/15/spotify-1759471_1280.jpg', pinned: true},
-    'files': {title: 'Anchor Play', path: 'app-ps5.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-OeL_be7RFaoHi3PswkuAR5XcMgBNRDynsg&s', pinned: true},
+    'files': {title: 'Anchor Files', path: 'files.html', icon: 'https://cdn-icons-png.flaticon.com/512/3767/3767084.png', pinned: true},
     'web': {title: 'Anchor Web', path: 'app-web.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeD89ZcX5W1FBtal7RerasT27q-OmZqnBixQ&s', pinned: true},
     'settings': {title: 'Anchor Settings', internal: true, icon: 'https://cdn.iconscout.com/icon/free/png-256/free-apple-settings-icon-svg-download-png-493162.png', pinned: true},
     'calculator': {title: 'Anchor Calculator', path: 'app-calculator.html', icon: 'https://cdn-icons-png.flaticon.com/512/104/104686.png', pinned: false},
     'study': {title: 'Anchor Study', path: 'app-study.html', icon: 'https://cdn-icons-png.flaticon.com/512/3074/3074058.png', pinned: false},
-    'wolfy': {title: 'Ask Wolfy', path: 'app-wolfy.html', icon: 'arch-mark.svg', pinned: true},
+    'wolfy': {title: 'Wolfy AI', path: 'wolfy-ai.html', icon: 'arch-mark.svg', pinned: true},
+    'chat': {title: 'Anchor Chat', path: 'chat.html', icon: 'https://cdn-icons-png.flaticon.com/512/134/134914.png', pinned: false},
+    'education': {title: 'Anchor Academy', path: 'education.html', icon: 'https://cdn-icons-png.flaticon.com/512/167/167707.png', pinned: false},
+    'extensions': {title: 'Extensions', path: 'extensions.html', icon: 'https://cdn-icons-png.flaticon.com/512/126/126472.png', pinned: false},
     'discord': {title: 'Discord', path: 'app-discord.html', icon: 'https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png', pinned: false},
     'roblox': {title: 'Roblox', path: 'app-roblox.html', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9KvNyFWMg_bjo_q_1IVLKFWbfCeonn2qDow&s', pinned: false},
     'android': {title: 'Android', path: 'app-android.html', icon: 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/android-icon.png', pinned: false},
-    'ciniai': {title: 'Ask Wolfy', path: 'app-wolfy.html', icon: 'arch-mark.svg', pinned: true},
     'VM': {title: 'Windows Virtual-Machine', path: 'app-vm.html', icon: 'https://static1.squarespace.com/static/68e69c83884dc82cc035a923/69454e29c6db7516b2566fca/69454e32c6db7516b256749a/1766149682532/Virtualbox_logo.png?format=original', pinned: false},
     'crunchyroll': {title: 'CrunchyRoll', path: 'app-crunchy.html', icon: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a0a4547a-06c5-4740-b87a-ca9c4fa0171e/dduaesk-2b3e85d2-3116-4eb5-8260-f413d1fc670e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi9hMGE0NTQ3YS0wNmM1LTQ3NDAtYjg3YS1jYTljNGZhMDE3MWUvZGR1YWVzay0yYjNlODVkMi0zMTE2LTRlYjUtODI2MC1mNDEzZDFmYzY3MGUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.vReffTSSKpde4w8EwFxz_CttxlLay8fXOq0goYh6rsg', pinned: false},
     'Geforce': {title: 'GEFORCE NOW', path: 'app-geforce.html', icon: 'https://play-lh.googleusercontent.com/_-b_HQXrVyyhZSHj_BoE9u_-cxkcHDH_yLX5rDjJsFMIfsCNQs9F3QP4JvEFcWaSIz0=w240-h480-rw', pinned: false},
@@ -64,7 +66,7 @@ var wallpaperRegistry = {
     "Desktop": {id: "Desktop", name: "Desktop Lines", url: "video-desktop.mp4", locked: false}
 };
 
-var sysConfig = JSON.parse(localStorage.getItem('cine_sys_config')) || {};
+var sysConfig = JSON.parse(localStorage.getItem('anchor_sys_config')) || {};
 if(sysConfig.optBg === undefined) sysConfig.optBg = false;
 if(sysConfig.shortBoot === undefined) sysConfig.shortBoot = true;
 if(sysConfig.wpLoop === undefined) sysConfig.wpLoop = false;
@@ -77,7 +79,7 @@ if(!sysConfig.cloak) sysConfig.cloak = 'none';
 
 window.updateSysSetting = function(key, value) {
     sysConfig[key] = value;
-    localStorage.setItem('cine_sys_config', JSON.stringify(sysConfig));
+    localStorage.setItem('anchor_sys_config', JSON.stringify(sysConfig));
     if(key === 'optBg') applySystemSettings();
     if(key === 'wpLoop') updateWallpaperLoop();
 };
@@ -92,7 +94,7 @@ var cloaks = {
 
 window.updateCloak = function(key) {
     sysConfig.cloak = key;
-    localStorage.setItem('cine_sys_config', JSON.stringify(sysConfig));
+    localStorage.setItem('anchor_sys_config', JSON.stringify(sysConfig));
     applyCloak();
 };
 
@@ -432,7 +434,7 @@ function updateSidebarData() {
     try {
         let ps = JSON.parse(localStorage.getItem('ps_purchased'));
         if(ps && ps.length > 0) document.getElementById('last-game-name').innerText = "PS5 Library Ready";
-        let sp = JSON.parse(localStorage.getItem('cinify_cache'));
+        let sp = JSON.parse(localStorage.getItem('anchor_music_cache'));
         if(sp) {
             let k = Object.keys(sp);
             if(k.length > 0) {
@@ -681,10 +683,10 @@ document.addEventListener('mouseover', function(e) {
     }
 });
 
-var desktopLayout = JSON.parse(localStorage.getItem('cine_desktop_v2')) || [];
+var desktopLayout = JSON.parse(localStorage.getItem('anchor_desktop_v2')) || [];
 
 function saveDesktop() {
-    localStorage.setItem('cine_desktop_v2', JSON.stringify(desktopLayout));
+    localStorage.setItem('anchor_desktop_v2', JSON.stringify(desktopLayout));
     loadDesktop();
 }
 
@@ -974,7 +976,7 @@ window.toggleDesktopSize = function(l) {
     document.getElementById('desktop-context-menu').style.display = 'none';
 };
 
-var unlockedWallpapers = JSON.parse(localStorage.getItem('cine_unlocked_wp')) || ['default'];
+var unlockedWallpapers = JSON.parse(localStorage.getItem('anchor_unlocked_wp')) || ['default'];
 window.wpMode = 'both';
 
 function setWallpaper(k, noti=false) {
@@ -983,7 +985,7 @@ function setWallpaper(k, noti=false) {
     
     if(noti && d.locked && !unlockedWallpapers.includes(d.id)) {
         unlockedWallpapers.push(d.id);
-        localStorage.setItem('cine_unlocked_wp', JSON.stringify(unlockedWallpapers));
+        localStorage.setItem('anchor_unlocked_wp', JSON.stringify(unlockedWallpapers));
         alert("Wallpaper: [ " + d.name + " ] Unlocked.");
     }
     
@@ -1113,9 +1115,9 @@ if(cvsSnow) {
 
 var MODES = ['FAST', 'THINKING', 'LIVE'];
 var cMode = 0;
-var isCiriActive = false;
+var isWolfyActive = false;
 var holdTimer = null;
-var hasBootCiri = false;
+var hasBootWolfy = false;
 var expectKey = false;
 var sStream = null;
 var cImgB64 = null;
@@ -1125,7 +1127,7 @@ function checkApiKey() {
     let st = document.getElementById('status-text');
     let si = document.getElementById('status-icon');
     if(!st) return;
-    if(localStorage.getItem('ciri_key')) {
+    if(localStorage.getItem('wolfy_key')) {
         st.textContent = "Secure"; st.className = "secure";
         si.innerHTML = '<svg class="secure-svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>';
     } else {
@@ -1139,15 +1141,15 @@ window.autoGrow = function(el) { el.style.height = "5px"; el.style.height = (el.
 
 window.addEventListener('keydown', function(e) {
     if(e.altKey && (e.code === 'KeyS' || e.key.toLowerCase() === 's')) {
-        if(!holdTimer && !isCiriActive) {
+        if(!holdTimer && !isWolfyActive) {
             holdTimer = setTimeout(function() {
-                document.body.classList.add('ciri-active');
-                isCiriActive = true;
+                document.body.classList.add('wolfy-active');
+                isWolfyActive = true;
                 let cInp = document.getElementById('chat-input');
-                if(!hasBootCiri) {
-                    let bs = document.getElementById('ciri-boot-screen');
+                if(!hasBootWolfy) {
+                    let bs = document.getElementById('wolfy-boot-screen');
                     if(bs) bs.style.display = 'flex';
-                    setTimeout(function(){ document.getElementById('boot-ciri-text').classList.add('typing'); }, 300);
+                    setTimeout(function(){ document.getElementById('boot-wolfy-text').classList.add('typing'); }, 300);
                     setTimeout(function(){ document.getElementById('boot-sub-text').classList.add('show'); }, 1100);
                     setTimeout(function() {
                         document.getElementById('boot-loader').style.opacity = '1';
@@ -1158,7 +1160,7 @@ window.addEventListener('keydown', function(e) {
                                 bs.style.filter = 'blur(10px)'; bs.style.opacity = '0';
                                 setTimeout(function() {
                                     bs.style.display = 'none';
-                                    hasBootCiri = true;
+                                    hasBootWolfy = true;
                                     if(cInp) cInp.focus();
                                 }, 800);
                             }, 1800);
@@ -1169,8 +1171,8 @@ window.addEventListener('keydown', function(e) {
                 }
             }, 2000);
         }
-    } else if(e.code === 'Escape' && isCiriActive) {
-        closeCiri();
+    } else if(e.code === 'Escape' && isWolfyActive) {
+        closeWolfy();
     }
 });
 
@@ -1180,14 +1182,14 @@ window.addEventListener('keyup', function(e) {
     }
 });
 
-window.closeCiri = function() {
-    document.body.classList.remove('ciri-active');
-    isCiriActive = false;
+window.closeWolfy = function() {
+    document.body.classList.remove('wolfy-active');
+    isWolfyActive = false;
 };
 
 var aMedia = null;
 var nHide;
-var cNoti = document.getElementById('cine-noti');
+var cNoti = document.getElementById('media-noti');
 
 function showNoti() {
     if(!cNoti) return;
@@ -1363,7 +1365,7 @@ function chkFps() {
             fLC++;
             if(fLC >= 5 && !sysConfig.optBg) {
                 sysConfig.optBg = true;
-                localStorage.setItem('cine_sys_config', JSON.stringify(sysConfig));
+                localStorage.setItem('anchor_sys_config', JSON.stringify(sysConfig));
                 let bv = document.getElementById('bg-video');
                 let lv = document.getElementById('lock-video');
                 if(bv) bv.pause();
@@ -1387,7 +1389,7 @@ function renderWolfyMessage(role, text) {
     var history = document.getElementById('chat-history');
     if(!history) return;
     var message = document.createElement('div');
-    message.className = 'message ' + (role === 'user' ? 'user' : 'ciri');
+    message.className = 'message ' + (role === 'user' ? 'user' : 'wolfy');
     if(window.marked && role !== 'user') message.innerHTML = window.marked.parse(text);
     else message.textContent = text;
     history.appendChild(message);
